@@ -1,0 +1,5 @@
+bin
+
+config/config.yaml
+
+.env
