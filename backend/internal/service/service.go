@@ -12,11 +12,15 @@ type Tour interface {
 	GetAllTours(ctx context.Context /* ...filtering params */) ([]entity.Tour, error)
 }
 
+type Review interface {
+	GetAllReviewsByTourId(ctx context.Context /* параметры фильтра*/) ([]entity.Review, error)
+}
+
 type Services struct {
 	// Auth        Auth
 	// Account     Account
-
-	Tour Tour
+	Review Review
+	Tour   Tour
 }
 
 type ServicesDependencies struct {

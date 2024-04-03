@@ -26,10 +26,14 @@ type Tour interface {
 	GetAllTours(ctx context.Context /* params for filtering */) ([]entity.Tour, error)
 }
 
+type Review interface {
+	GetAllReviewsByTourId(ctx context.Context /* params for filtering */) ([]entity.Review, error)
+}
+
 type Repositories struct {
 	User
 	Account
-
+	Review
 	Tour
 	// Reservation
 }
