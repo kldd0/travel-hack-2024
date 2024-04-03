@@ -12,12 +12,18 @@ type Config struct {
 	Env string `yaml:"env" env-default:"local"`
 
 	HTTPServer `yaml:"http_server"`
+	Postgres
 }
 
 type HTTPServer struct {
 	Address     string        `yaml:"address" env-default:"localhost:8080"`
 	Timeout     time.Duration `yaml:"timeout" env-default:"4s"`
 	IdleTimeout time.Duration `yaml:"idle_timeout" env-default:"60s"`
+}
+
+type Postgres struct {
+	MaxPoolSize int    `env-required:"true" yaml:"max_pool_size" env:"PG_MAX_POOL_SIZE"`
+	URL         string `env-required:"true"                      env:"PG_URL"`
 }
 
 func MustLoad() *Config {

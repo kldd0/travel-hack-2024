@@ -8,22 +8,61 @@ import (
 
 	"github.com/kldd0/travel-hack-2024/internal/config"
 	v1 "github.com/kldd0/travel-hack-2024/internal/controller/http/v1"
-	httpserver "github.com/kldd0/travel-hack-2024/pkg/http-server"
+	httpserver "github.com/kldd0/travel-hack-2024/internal/pkg/http-server"
+	"github.com/kldd0/travel-hack-2024/internal/pkg/postgres"
+	"github.com/kldd0/travel-hack-2024/internal/pkg/validator"
+	"github.com/kldd0/travel-hack-2024/internal/repository"
+	"github.com/kldd0/travel-hack-2024/internal/service"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 )
 
+// @title           Tour Management Service
+// @version         1.0
+// @description     Additional service for RUSSPASS
+
+// @host      localhost:8080
+// @BasePath  /
+
+// @securityDefinitions.apikey  JWT
+// @in                          header
+// @name                        Authorization
+// @description					JWT token
+
 func Run() {
 	config := config.MustLoad()
 
+	// Setup logger
 	SetLogger(config.Env)
 
+	// Repositories
+	log.Info().Msg("Initializing postgres...")
+	pg, err := postgres.New(config.Postgres.URL, postgres.MaxPoolSize(config.Postgres.MaxPoolSize))
+	if err != nil {
+		log.Err(fmt.Errorf("app.Run.postgres.NewServices: %w", err))
+		os.Exit(-1)
+	}
+	defer pg.Close()
+
+	// Repositories
+	log.Info().Msg("Initializing repositories")
+	repositories := repository.NewRepositories()
+
+	// Services dependencies
+	log.Info().Msg("Initializing services")
+	deps := service.ServicesDependencies{
+		Repos: repositories,
+	}
+	services := service.NewServices(deps)
+
 	// Echo handler
-	log.Info().Msg("Initializing handlers and routes...")
+	log.Info().Msg("Initializing handlers and routes")
 	handler := echo.New()
+	// setup handler validator as lib validator
+	handler.Validator = validator.NewCustomValidator()
 
 	// Router
-	v1.NewRouter(handler)
+	v1.NewRouter(handler, services)
 
 	// HTTP server
 	log.Info().Msg("Starting http server")
@@ -49,7 +88,7 @@ func Run() {
 
 	// Graceful shutdown
 	log.Info().Msg("Shutting down")
-	err := httpServer.Shutdown()
+	err = httpServer.Shutdown()
 	if err != nil {
 		log.Err(fmt.Errorf("app.Run.httpServer.Shutdown: %w", err))
 	}

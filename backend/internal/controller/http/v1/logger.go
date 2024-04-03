@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"os"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/rs/zerolog"
@@ -35,4 +37,12 @@ func DefaultRequestLogger() echo.MiddlewareFunc {
 			return nil
 		},
 	})
+}
+
+func setLogsFile() *os.File {
+	file, err := os.OpenFile("logs/requests.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
+	if err != nil {
+		panic(err)
+	}
+	return file
 }
