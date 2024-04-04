@@ -22,14 +22,9 @@ func newReviewRoutes(g *echo.Group, reviewService service.Review) *reviewRoutes 
 	return r
 }
 
-/*
-type getByIdInput struct {
-	Id int `json:"id" validate:"required"`
-}
-*/
-
 func (r *reviewRoutes) getById(c echo.Context) error {
-	var input getByIdInput //id тура для выбора
+	var input interface{}
+
 	if err := c.Bind(&input); err != nil {
 		ErrorResponse(c, http.StatusBadRequest, "invalid request body")
 		return err
@@ -40,14 +35,14 @@ func (r *reviewRoutes) getById(c echo.Context) error {
 		return err
 	}
 
-	reviews, err := r.reviewService.GetAllReviewsByTourId(c.Request().Context())
+	reviews, err := r.reviewService.GetMany(c.Request().Context())
 	if err != nil {
 		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return err
 	}
 
 	type response struct {
-		Reviews []entity.Review `json:"reviews"`
+		Reviews []entity.Review
 	}
 
 	return c.JSON(http.StatusOK, response{

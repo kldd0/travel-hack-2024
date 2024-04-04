@@ -16,9 +16,9 @@ func NewTourService(tourRepository repository.Tour) *TourService {
 }
 
 func (s *TourService) GetTourById(ctx context.Context, id int) (entity.Tour, error) {
-	return s.tourRepository.GetTourById(ctx, id)
+	return s.tourRepository.GetById(ctx, id)
 }
 
-func (s *TourService) GetAllTours(ctx context.Context /* filtering params */) ([]entity.Tour, error) {
-	return s.tourRepository.GetAllTours(ctx)
+func (s *TourService) GetMany(ctx context.Context /* filtering params */) ([]entity.Tour, error) {
+	return s.tourRepository.GetMany(ctx)
 }

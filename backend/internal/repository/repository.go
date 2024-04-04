@@ -13,21 +13,21 @@ var (
 )
 
 type User interface {
-	GetUserByUsernameAndPassword(ctx context.Context, username, password string) (entity.User, error)
+	GetByUsernameAndPassword(ctx context.Context, username, password string) (entity.User, error)
 }
 
 type Account interface {
-	CreateAccount(ctx context.Context) (int, error)
-	GetAccountById(ctx context.Context, id int) (entity.Account, error)
+	Create(ctx context.Context) (int, error)
+	GetById(ctx context.Context, id int) (entity.Account, error)
 }
 
 type Tour interface {
-	GetTourById(ctx context.Context, id int) (entity.Tour, error)
-	GetAllTours(ctx context.Context /* params for filtering */) ([]entity.Tour, error)
+	GetById(ctx context.Context, id int) (entity.Tour, error)
+	GetMany(ctx context.Context /* params for filtering */) ([]entity.Tour, error)
 }
 
 type Review interface {
-	GetAllReviewsByTourId(ctx context.Context /* params for filtering */) ([]entity.Review, error)
+	GetMany(ctx context.Context /* params for filtering */) ([]entity.Review, error)
 }
 
 type Repositories struct {
@@ -35,6 +35,7 @@ type Repositories struct {
 	Account
 	Review
 	Tour
+
 	// Reservation
 }
 

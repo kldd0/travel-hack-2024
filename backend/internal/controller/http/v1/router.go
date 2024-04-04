@@ -1,6 +1,8 @@
 package v1
 
 import (
+	_ "github.com/kldd0/travel-hack-2024/docs"
+
 	"github.com/kldd0/travel-hack-2024/internal/service"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -17,7 +19,7 @@ func NewRouter(handler *echo.Echo, services *service.Services) {
 	handler.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
-		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
+		AllowMethods: []string{echo.GET, echo.POST},
 	}))
 
 	handler.GET("/health", func(c echo.Context) error { return c.NoContent(200) })
@@ -26,6 +28,6 @@ func NewRouter(handler *echo.Echo, services *service.Services) {
 	v1 := handler.Group("/api/v1")
 	{
 		newTourRoutes(v1.Group("/tours"), services.Tour)
-		newReviewRoutes(v1.Group("/review"), services.Review)
+		// newReviewRoutes(v1.Group("/review"), services.Review)
 	}
 }
