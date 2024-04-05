@@ -1,0 +1,227 @@
+basePath: /
+definitions:
+  echo.HTTPError:
+    properties:
+      message: {}
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.Image:
+    properties:
+      caption:
+        type: string
+      url:
+        type: string
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.Tag:
+    properties:
+      title:
+        type: string
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.Tour:
+    properties:
+      category:
+        type: string
+      comfort_level:
+        type: string
+      dates:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate'
+        type: array
+      description:
+        type: string
+      difficulty_level:
+        type: string
+      faq:
+        type: string
+      id:
+        type: integer
+      important_info:
+        type: string
+      included:
+        items:
+          type: string
+        type: array
+      location:
+        type: string
+      media:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Image'
+        type: array
+      nearest_date:
+        type: string
+      night_count:
+        type: integer
+      not_included:
+        items:
+          type: string
+        type: array
+      program:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+      type:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tag'
+        type: array
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.TourDate:
+    properties:
+      End:
+        type: string
+      Start:
+        type: string
+      Var:
+        type: string
+    type: object
+  internal_controller_http_v1.tourRoutes:
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Additional service for RUSSPASS
+  title: Tour Management Service
+  version: "1.0"
+paths:
+  /api/v1/tours:
+    get:
+      description: Get tours according to search and filter params
+      parameters:
+      - description: From location name
+        in: query
+        name: fromName
+        type: string
+      - description: To location name
+        in: query
+        name: toName
+        required: true
+        type: string
+      - description: Date of the tour
+        in: query
+        name: when
+        required: true
+        type: string
+      - description: Number of nights in the tour
+        in: query
+        name: nightsCnt
+        required: true
+        type: integer
+      - description: Number of adults
+        in: query
+        name: adults
+        required: true
+        type: integer
+      - description: Number of children
+        in: query
+        name: childrens
+        required: true
+        type: integer
+      - description: Type of the tour
+        in: query
+        name: tourType
+        required: true
+        type: string
+      - description: Minimum price
+        in: query
+        name: priceFrom
+        required: true
+        type: string
+      - description: Maximum price
+        in: query
+        name: priceTo
+        required: true
+        type: string
+      - description: Minimum rating
+        in: query
+        name: rating
+        required: true
+        type: integer
+      - description: Guaranteed availability
+        in: query
+        name: guaranteed
+        required: true
+        type: boolean
+      - description: Feature 1
+        in: query
+        name: feature1
+        required: true
+        type: string
+      - description: Feature 2
+        in: query
+        name: feature2
+        required: true
+        type: string
+      - description: Feature 3
+        in: query
+        name: feature3
+        required: true
+        type: string
+      - description: Age group ID
+        in: query
+        name: ageGroupId
+        required: true
+        type: integer
+      - description: Tour difficulty level
+        in: query
+        name: difficulty
+        required: true
+        type: integer
+      - description: Comfort level
+        in: query
+        name: comfort
+        required: true
+        type: integer
+      - description: Food ID
+        in: query
+        name: foodId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tour'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get tours according to search and filter params
+      tags:
+      - tours
+  /api/v1/tours/{id}:
+    get:
+      description: Get tour by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_controller_http_v1.tourRoutes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get tour by id
+      tags:
+      - tours
+securityDefinitions:
+  JWT:
+    description: JWT token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -11,11 +11,12 @@ import (
 )
 
 func NewRouter(handler *echo.Echo, services *service.Services) {
-	handler.Use(DefaultRequestLogger())
 	handler.Use(middleware.Recover())
 	handler.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Output: setLogsFile(),
 	}))
+	handler.Use(DefaultRequestLogger())
+
 	handler.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},

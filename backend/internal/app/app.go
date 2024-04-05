@@ -16,17 +16,17 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// @title           Tour Management Service
-// @version         1.0
-// @description     Additional service for RUSSPASS
+//	@title			Tour Management Service
+//	@version		1.0
+//	@description	Additional service for RUSSPASS
 
-// @host      localhost:8080
-// @BasePath  /
+//	@host		localhost:8080
+//	@BasePath	/
 
-// @securityDefinitions.apikey  JWT
-// @in                          header
-// @name                        Authorization
-// @description					JWT token
+//	@securityDefinitions.apikey	JWT
+//	@in							header
+//	@name						Authorization
+//	@description				JWT token
 
 func Run() {
 	config := config.MustLoad()
