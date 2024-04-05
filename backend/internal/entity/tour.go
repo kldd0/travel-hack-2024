@@ -15,13 +15,13 @@ type Tour struct {
 	NotIncluded     []string   `json:"not_included"`
 	DifficultyLevel string     `json:"difficulty_level"`
 	ComfortLevel    string     `json:"comfort_level"`
-	NearestDate     time.Time  `json:"nearest_date"`
-	GroupDates      []TourDate `json:"dates"`
+	NearestDate     time.Time  `json:"nearest_date"` /* must be updated every req */
+	GroupDates      []TourDate `json:"group_dates"`  /* must be updated every req */
 	ImportantInfo   string     `json:"important_info"`
 	Media           []Image    `json:"media"`
 	Faq             string     `json:"faq"`
 
-	/* embed count of companions */
+	/* embed count of companions and their age group */
 }
 
 type Tag struct {
@@ -34,7 +34,6 @@ type Image struct {
 }
 
 type TourDate struct {
-	Var   string    `json:"Var"`
-	Start time.Time `json:"Start"`
-	End   time.Time `json:"End"`
+	Start time.Time `json:"start"`
+	End   time.Time `json:"end"`
 }
