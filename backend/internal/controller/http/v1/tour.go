@@ -19,7 +19,7 @@ func newTourRoutes(g *echo.Group, tourService service.Tour) *tourRoutes {
 	}
 
 	g.GET("/:id", r.getById)
-	g.GET("", r.getMany)
+	g.GET("", r.getMany) //todo: ref
 
 	return r
 }

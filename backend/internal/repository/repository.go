@@ -30,12 +30,17 @@ type Review interface {
 	GetMany(ctx context.Context /* params for filtering */) ([]entity.Review, error)
 }
 
+type Ticket interface {
+	GetTicketById(ctx context.Context, id int /* params for filtering */) (entity.Ticket, error)
+	Process(ctx context.Context /* params for filtering */) error // обработка заявки
+}
+
 type Repositories struct {
 	User
 	Account
 	Review
 	Tour
-
+	Ticket
 	// Reservation
 }
 
