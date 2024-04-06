@@ -15,7 +15,6 @@ func NewReviewService(reviewRepository repository.Review) *ReviewService {
 	return &ReviewService{reviewRepository: reviewRepository}
 }
 
-// вернем отзывы по нужному туру
-func (s *ReviewService) GetAllReviewsByTourId(ctx context.Context) ([]entity.Review, error) {
-	return s.reviewRepository.GetAllById(ctx)
+func (s *ReviewService) GetAllByTourId(ctx context.Context, tourId int) ([]entity.Review, error) {
+	return s.reviewRepository.GetAllByTourId(ctx, tourId)
 }

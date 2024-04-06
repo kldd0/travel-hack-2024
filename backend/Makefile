@@ -30,7 +30,7 @@ linter-hadolint: ### check by hadolint linter
 .PHONY: linter-hadolint
 
 migrate-create: ### create new migration
-	migrate create -ext sql -dir migrations 'account_management'
+	migrate create -ext sql -dir migrations ''
 .PHONY: migrate-create
 
 migrate-up: ### migration up

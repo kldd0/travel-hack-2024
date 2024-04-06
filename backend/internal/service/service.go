@@ -13,7 +13,7 @@ type Tour interface {
 }
 
 type Review interface {
-	GetAllById(ctx context.Context /* параметры фильтра*/) ([]entity.Review, error)
+	GetAllByTourId(ctx context.Context, tourId int) ([]entity.Review, error)
 }
 
 type Order interface {

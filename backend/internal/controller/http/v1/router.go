@@ -30,6 +30,5 @@ func NewRouter(handler *echo.Echo, services *service.Services) {
 	{
 		newTourRoutes(v1.Group("/tours"), services.Tour, services.Review, services.Order)
 		newCityRoutes(v1.Group("/cities"), services.City)
-		// newReviewRoutes(v1.Group("/review"), services.Review)
 	}
 }

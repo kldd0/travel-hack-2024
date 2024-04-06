@@ -30,7 +30,7 @@ func newTourRoutes(
 	g.GET("", r.getMany)
 	g.GET("/:id", r.getById)
 
-	g.GET("/:id/order", r.makeOrder)
+	g.POST("/:id/order", r.makeOrder)
 
 	return r
 }
@@ -68,7 +68,7 @@ func (r *tourRoutes) getById(c echo.Context) error {
 	}
 
 	//получаем отзывы
-	reviews, err := r.tourReview.GetAllById(c.Request().Context())
+	reviews, err := r.tourReview.GetAllByTourId(c.Request().Context(), tour.Id)
 	if err != nil {
 		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return err

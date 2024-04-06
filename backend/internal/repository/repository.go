@@ -30,7 +30,7 @@ type Tour interface {
 }
 
 type Review interface {
-	GetAllById(ctx context.Context /* params for filtering */) ([]entity.Review, error)
+	GetAllByTourId(ctx context.Context, tourId int) ([]entity.Review, error)
 }
 
 type Order interface {
@@ -43,12 +43,13 @@ type City interface {
 }
 
 type Repositories struct {
-	User
-	Account
-	Review
+	// User
+	// Account
+
 	Tour
 	Order
 	City
+	Review
 
 	// Reservation
 }
@@ -56,7 +57,8 @@ type Repositories struct {
 func NewRepositories() *Repositories {
 	nilPgPointer := (*pgdb.Postgres)(nil)
 	return &Repositories{
-		Tour: postgres.NewTourRepository(nilPgPointer),
-		City: postgres.NewCityRepository(nilPgPointer),
+		Tour:   postgres.NewTourRepository(nilPgPointer),
+		Review: postgres.NewReviewRepository(nilPgPointer),
+		City:   postgres.NewCityRepository(nilPgPointer),
 	}
 }
