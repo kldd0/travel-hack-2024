@@ -217,6 +217,164 @@
                 }
             }
         },
+        "/api/v1/tours/hot": {
+            "get": {
+                "description": "Get hot tours according to search and filter params",
+                "produces": [
+                    "application/json",
+                    "application/json"
+                ],
+                "tags": [
+                    "tours"
+                ],
+                "summary": "Get hot tours according to search and filter params",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "From location name",
+                        "name": "fromName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "To location name",
+                        "name": "toName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date of the tour",
+                        "name": "whenDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of nights in the tour",
+                        "name": "nightsCnt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of adults",
+                        "name": "adults",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of children",
+                        "name": "childrens",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Type of the tour",
+                        "name": "tourType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Minimum price",
+                        "name": "priceFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Maximum price",
+                        "name": "priceTo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Minimum rating",
+                        "name": "rating",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Guaranteed availability",
+                        "name": "guaranteed",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Flight is included",
+                        "name": "withFlight",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Accomodation is included",
+                        "name": "withAcc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Nutrition is included",
+                        "name": "withFood",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "The tour takes place on a weekend",
+                        "name": "dayOff",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Low cost tour",
+                        "name": "lowCost",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Age group ID",
+                        "name": "ageGroupId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Tour difficulty level",
+                        "name": "difficulty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Comfort level",
+                        "name": "comfort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Food ID",
+                        "name": "foodId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/tours/{id}": {
             "get": {
                 "description": "Get tour by id",
@@ -419,10 +577,6 @@
                     "items": {
                         "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Image"
                     }
-                },
-                "nearest_date": {
-                    "description": "must be updated every req",
-                    "type": "string"
                 },
                 "night_count": {
                     "type": "integer"

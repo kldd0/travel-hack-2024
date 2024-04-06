@@ -30,8 +30,7 @@ type Tour struct {
 	NotIncluded     []string   `json:"not_included"`
 	DifficultyLevel string     `json:"difficulty_level"`
 	ComfortLevel    string     `json:"comfort_level"`
-	NearestDate     time.Time  `json:"nearest_date"` /* must be updated every req */
-	Dates           []TourDate `json:"tour_dates"`   /* must be updated every req */
+	Dates           []TourDate `json:"tour_dates"` /* must be updated every req */
 	ImportantInfo   string     `json:"important_info"`
 	Media           []Image    `json:"media"`
 	Faq             string     `json:"faq"`

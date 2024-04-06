@@ -108,9 +108,6 @@ definitions:
         items:
           $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Image'
         type: array
-      nearest_date:
-        description: must be updated every req
-        type: string
       night_count:
         type: integer
       not_included:
@@ -317,6 +314,111 @@ paths:
           schema:
             $ref: '#/definitions/echo.HTTPError'
       summary: Get tour by id
+      tags:
+      - tours
+  /api/v1/tours/hot:
+    get:
+      description: Get hot tours according to search and filter params
+      parameters:
+      - description: From location name
+        in: query
+        name: fromName
+        type: string
+      - description: To location name
+        in: query
+        name: toName
+        type: string
+      - description: Date of the tour
+        in: query
+        name: whenDate
+        type: string
+      - description: Number of nights in the tour
+        in: query
+        name: nightsCnt
+        type: integer
+      - description: Number of adults
+        in: query
+        name: adults
+        type: integer
+      - description: Number of children
+        in: query
+        name: childrens
+        type: integer
+      - description: Type of the tour
+        in: query
+        name: tourType
+        type: string
+      - description: Minimum price
+        in: query
+        name: priceFrom
+        type: string
+      - description: Maximum price
+        in: query
+        name: priceTo
+        type: string
+      - description: Minimum rating
+        in: query
+        name: rating
+        type: integer
+      - description: Guaranteed availability
+        in: query
+        name: guaranteed
+        type: boolean
+      - description: Flight is included
+        in: query
+        name: withFlight
+        type: boolean
+      - description: Accomodation is included
+        in: query
+        name: withAcc
+        type: boolean
+      - description: Nutrition is included
+        in: query
+        name: withFood
+        type: boolean
+      - description: The tour takes place on a weekend
+        in: query
+        name: dayOff
+        type: boolean
+      - description: Low cost tour
+        in: query
+        name: lowCost
+        type: boolean
+      - description: Age group ID
+        in: query
+        name: ageGroupId
+        type: integer
+      - description: Tour difficulty level
+        in: query
+        name: difficulty
+        type: integer
+      - description: Comfort level
+        in: query
+        name: comfort
+        type: integer
+      - description: Food ID
+        in: query
+        name: foodId
+        type: integer
+      produces:
+      - application/json
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get hot tours according to search and filter params
       tags:
       - tours
 securityDefinitions:

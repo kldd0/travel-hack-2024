@@ -42,7 +42,6 @@ var (
 		},
 		DifficultyLevel: "Базовый",
 		ComfortLevel:    "Высокий",
-		NearestDate:     time.Date(2024, 04, 1, 0, 0, 0, 0, time.Local),
 		Dates: []entity.TourDate{
 			{
 				Start: time.Date(2024, 04, 15, 0, 0, 0, 0, time.Local),

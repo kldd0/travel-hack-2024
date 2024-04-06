@@ -40,7 +40,8 @@ type ServicesDependencies struct {
 
 func NewServices(deps ServicesDependencies) *Services {
 	return &Services{
-		Tour: deps.Repos.Tour,
-		City: deps.Repos.City,
+		Tour:   deps.Repos.Tour,
+		Review: deps.Repos.Review,
+		City:   deps.Repos.City,
 	}
 }
