@@ -113,87 +113,78 @@ paths:
       - description: To location name
         in: query
         name: toName
-        required: true
         type: string
       - description: Date of the tour
         in: query
-        name: when
-        required: true
+        name: whenDate
         type: string
       - description: Number of nights in the tour
         in: query
         name: nightsCnt
-        required: true
         type: integer
       - description: Number of adults
         in: query
         name: adults
-        required: true
         type: integer
       - description: Number of children
         in: query
         name: childrens
-        required: true
         type: integer
       - description: Type of the tour
         in: query
         name: tourType
-        required: true
         type: string
       - description: Minimum price
         in: query
         name: priceFrom
-        required: true
         type: string
       - description: Maximum price
         in: query
         name: priceTo
-        required: true
         type: string
       - description: Minimum rating
         in: query
         name: rating
-        required: true
         type: integer
       - description: Guaranteed availability
         in: query
         name: guaranteed
-        required: true
         type: boolean
-      - description: Feature 1
+      - description: Flight is included
         in: query
-        name: feature1
-        required: true
-        type: string
-      - description: Feature 2
+        name: withFlight
+        type: boolean
+      - description: Accomodation is included
         in: query
-        name: feature2
-        required: true
-        type: string
-      - description: Feature 3
+        name: withAcc
+        type: boolean
+      - description: Nutrition is included
         in: query
-        name: feature3
-        required: true
-        type: string
+        name: withFood
+        type: boolean
+      - description: The tour takes place on a weekend
+        in: query
+        name: dayOff
+        type: boolean
+      - description: Low cost tour
+        in: query
+        name: lowCost
+        type: boolean
       - description: Age group ID
         in: query
         name: ageGroupId
-        required: true
         type: integer
       - description: Tour difficulty level
         in: query
         name: difficulty
-        required: true
         type: integer
       - description: Comfort level
         in: query
         name: comfort
-        required: true
         type: integer
       - description: Food ID
         in: query
         name: foodId
-        required: true
         type: integer
       produces:
       - application/json

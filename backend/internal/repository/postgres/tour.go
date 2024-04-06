@@ -43,7 +43,7 @@ var (
 		DifficultyLevel: "Базовый",
 		ComfortLevel:    "Высокий",
 		NearestDate:     time.Date(2024, 04, 1, 0, 0, 0, 0, time.Local),
-		GroupDates: []entity.TourDate{
+		Dates: []entity.TourDate{
 			{
 				Start: time.Date(2024, 04, 15, 0, 0, 0, 0, time.Local),
 				End:   time.Date(2024, 04, 20, 0, 0, 0, 0, time.Local),
@@ -60,6 +60,16 @@ var (
 		},
 		Faq: "faq",
 	}
+	test2  = entity.Tour{Id: 2, Title: "Волшебство водопадов: путешествие по каскадам"}
+	test3  = entity.Tour{Id: 3, Title: "Адреналин на высоте: альпинистский тур на вершину горы"}
+	test4  = entity.Tour{Id: 4, Title: "Волшебство озер: тур к кристально чистым водоемам"}
+	test5  = entity.Tour{Id: 5, Title: "Открытие гастрономических сокровищ Осетии: тур для гурманов"}
+	test6  = entity.Tour{Id: 6, Title: "Горный хребет России: приключения на Кавказе"}
+	test7  = entity.Tour{Id: 7, Title: "Шелковый путь Кавказа: путешествие по культурным тропам"}
+	test8  = entity.Tour{Id: 8, Title: "Встреча с душой Кавказа: этнотур к горцам и пастушьим племенам"}
+	test9  = entity.Tour{Id: 9, Title: "Приключение в горах: треккинг по высокогорным маршрутам"}
+	test10 = entity.Tour{Id: 10, Title: "Зеленые холмы Осетии: экскурсия по горным лугам и лесам региона"}
+	test11 = entity.Tour{Id: 11, Title: "В гармонии с природой: медитативные прогулки по лесу и полям"}
 )
 
 type TourRepository struct {
@@ -75,5 +85,5 @@ func (r *TourRepository) GetById(ctx context.Context, id int) (entity.Tour, erro
 }
 
 func (r *TourRepository) GetMany(ctx context.Context) ([]entity.Tour, error) {
-	return []entity.Tour{test1, {Id: 1}, {Id: 2}}, nil
+	return []entity.Tour{test1, test3, test4, test8}, nil
 }

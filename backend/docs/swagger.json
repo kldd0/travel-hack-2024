@@ -31,120 +31,115 @@
                         "type": "string",
                         "description": "To location name",
                         "name": "toName",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Date of the tour",
-                        "name": "when",
-                        "in": "query",
-                        "required": true
+                        "name": "whenDate",
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Number of nights in the tour",
                         "name": "nightsCnt",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Number of adults",
                         "name": "adults",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Number of children",
                         "name": "childrens",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Type of the tour",
                         "name": "tourType",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Minimum price",
                         "name": "priceFrom",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Maximum price",
                         "name": "priceTo",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Minimum rating",
                         "name": "rating",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "Guaranteed availability",
                         "name": "guaranteed",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "Feature 1",
-                        "name": "feature1",
-                        "in": "query",
-                        "required": true
+                        "type": "boolean",
+                        "description": "Flight is included",
+                        "name": "withFlight",
+                        "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "Feature 2",
-                        "name": "feature2",
-                        "in": "query",
-                        "required": true
+                        "type": "boolean",
+                        "description": "Accomodation is included",
+                        "name": "withAcc",
+                        "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "Feature 3",
-                        "name": "feature3",
-                        "in": "query",
-                        "required": true
+                        "type": "boolean",
+                        "description": "Nutrition is included",
+                        "name": "withFood",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "The tour takes place on a weekend",
+                        "name": "dayOff",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Low cost tour",
+                        "name": "lowCost",
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Age group ID",
                         "name": "ageGroupId",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Tour difficulty level",
                         "name": "difficulty",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Comfort level",
                         "name": "comfort",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Food ID",
                         "name": "foodId",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {

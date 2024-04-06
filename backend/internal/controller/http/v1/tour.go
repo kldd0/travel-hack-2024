@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -18,8 +19,9 @@ func newTourRoutes(g *echo.Group, tourService service.Tour) *tourRoutes {
 		tourService: tourService,
 	}
 
-	g.GET("/:id", r.getById)
 	g.GET("", r.getMany)
+
+	g.GET("/:id", r.getById)
 	g.GET("/:id/review", r.getById)
 
 	return r
@@ -60,31 +62,33 @@ func (r *tourRoutes) getById(c echo.Context) error {
 }
 
 type ToursSearch struct {
-	FromName  string    `query:"fromName" validate:"omitempty"`
-	ToName    string    `query:"toName" validate:"omitempty"`
-	When      time.Time `query:"when"`
-	NightsCnt int       `query:"nightsCnt" validate:"omitempty"`
-	Adults    int       `query:"adults" validate:"omitempty"`
-	Childrens int       `query:"childrens" validate:"omitempty"`
+	FromName  string    `query:"fromName"`
+	ToName    string    `query:"toName"`
+	WhenDate  time.Time `query:"whenDate"`
+	NightsCnt int       `query:"nightsCnt"`
+	Adults    int       `query:"adults"`
+	Childrens int       `query:"childrens"`
 }
 
 type ToursFilter struct {
-	TourType   string `query:"tourType" validate:"omitempty"`
-	PriceFrom  string `query:"priceFrom" validate:"omitempty"`
-	PriceTo    string `query:"priceTo" validate:"omitempty"`
-	Rating     int    `query:"rating" validate:"omitempty"`
-	Guaranteed bool   `query:"guaranteed" validate:"omitempty"`
+	TourType   string `query:"tourType"`
+	PriceFrom  string `query:"priceFrom"`
+	PriceTo    string `query:"priceTo"`
+	Rating     int    `query:"rating"`
+	Guaranteed bool   `query:"guaranteed"`
 	Features   Features
-	AgeGroupId int `query:"ageGroupId" validate:"omitempty"`
-	Difficulty int `query:"difficulty" validate:"omitempty"`
-	Comfort    int `query:"comfort" validate:"omitempty"`
-	FoodId     int `query:"foodId" validate:"omitempty"`
+	AgeGroupId int `query:"ageGroupId"`
+	Difficulty int `query:"difficulty"`
+	Comfort    int `query:"comfort"`
+	FoodId     int `query:"foodId"`
 }
 
 type Features struct {
-	Feature1 string `query:"feature1" validate:"omitempty"`
-	Feature2 string `query:"feature2" validate:"omitempty"`
-	Feature3 string `query:"feature3" validate:"omitempty"`
+	WithFlight       bool `query:"withFlight"`
+	WithAccomodation bool `query:"withAcc"`
+	WithFood         bool `query:"withNutrition"`
+	DayOff           bool `query:"dayOff"`
+	LowCost          bool `query:"lowCost" `
 }
 
 type toursSearchAndFilterInput struct {
@@ -97,23 +101,25 @@ type toursSearchAndFilterInput struct {
 // @Tags			tours
 // @Produce		json
 // @Param			fromName	query	string	false	"From location name"
-// @Param			toName		query	string	true	"To location name"
-// @Param			when		query	string	true	"Date of the tour"
-// @Param			nightsCnt	query	int		true	"Number of nights in the tour"
-// @Param			adults		query	int		true	"Number of adults"
-// @Param			childrens	query	int		true	"Number of children"
-// @Param			tourType	query	string	true	"Type of the tour"
-// @Param			priceFrom	query	string	true	"Minimum price"
-// @Param			priceTo		query	string	true	"Maximum price"
-// @Param			rating		query	int		true	"Minimum rating"
-// @Param			guaranteed	query	boolean	true	"Guaranteed availability"
-// @Param			feature1	query	string	true	"Feature 1"
-// @Param			feature2	query	string	true	"Feature 2"
-// @Param			feature3	query	string	true	"Feature 3"
-// @Param			ageGroupId	query	int		true	"Age group ID"
-// @Param			difficulty	query	int		true	"Tour difficulty level"
-// @Param			comfort		query	int		true	"Comfort level"
-// @Param			foodId		query	int		true	"Food ID"
+// @Param			toName		query	string	false	"To location name"
+// @Param			whenDate	query	string	false	"Date of the tour"
+// @Param			nightsCnt	query	int		false	"Number of nights in the tour"
+// @Param			adults		query	int		false	"Number of adults"
+// @Param			childrens	query	int		false	"Number of children"
+// @Param			tourType	query	string	false	"Type of the tour"
+// @Param			priceFrom	query	string	false	"Minimum price"
+// @Param			priceTo		query	string	false	"Maximum price"
+// @Param			rating		query	int		false	"Minimum rating"
+// @Param			guaranteed	query	boolean	false	"Guaranteed availability"
+// @Param			withFlight	query	bool	false	"Flight is included"
+// @Param			withAcc		query	bool	false	"Accomodation is included"
+// @Param			withFood	query	bool	false	"Nutrition is included""
+// @Param			dayOff		query	bool	false	"The tour takes place on a weekend"
+// @Param			lowCost		query	bool	false	"Low cost tour"
+// @Param			ageGroupId	query	int		false	"Age group ID"
+// @Param			difficulty	query	int		false	"Tour difficulty level"
+// @Param			comfort		query	int		false	"Comfort level"
+// @Param			foodId		query	int		false	"Food ID"
 // @Produce		json
 // @Success		200	{object}	[]entity.SimplifiedTourView
 // @Failure		400	{object}	echo.HTTPError
@@ -127,10 +133,14 @@ func (r *tourRoutes) getMany(c echo.Context) error {
 		return err
 	}
 
-	if err := c.Validate(input); err != nil {
-		ErrorResponse(c, http.StatusBadRequest, err.Error())
-		return err
-	}
+	fmt.Println(input)
+
+	/*
+		if err := c.Validate(input); err != nil {
+			ErrorResponse(c, http.StatusBadRequest, err.Error())
+			return err
+		}
+	*/
 
 	tours, err := r.tourService.GetMany(c.Request().Context())
 	if err != nil {
@@ -138,7 +148,7 @@ func (r *tourRoutes) getMany(c echo.Context) error {
 		return err
 	}
 
-	simplifiedTours := make([]entity.SimplifiedTourView, len(tours))
+	simplifiedTours := make([]entity.SimplifiedTourView, 0, len(tours))
 	for _, tour := range tours {
 		simplifiedTours = append(simplifiedTours, entity.SimplifyingTour(tour))
 	}

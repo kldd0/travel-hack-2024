@@ -28,11 +28,13 @@ type Tour struct {
 	DifficultyLevel string     `json:"difficulty_level"`
 	ComfortLevel    string     `json:"comfort_level"`
 	NearestDate     time.Time  `json:"nearest_date"` /* must be updated every req */
-	GroupDates      []TourDate `json:"group_dates"`  /* must be updated every req */
+	Dates           []TourDate `json:"tour_dates"`   /* must be updated every req */
 	ImportantInfo   string     `json:"important_info"`
 	Media           []Image    `json:"media"`
 	Faq             string     `json:"faq"`
 	Rating          int        `json:"rating"`
+
+	/* liked by user */
 
 	/* embed count of companions and their age group */
 }
