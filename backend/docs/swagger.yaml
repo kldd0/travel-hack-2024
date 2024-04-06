@@ -13,9 +13,9 @@ definitions:
     type: object
   github_com_kldd0_travel-hack-2024_internal_entity.Image:
     properties:
-      caption:
+      src:
         type: string
-      url:
+      type:
         type: string
     type: object
   github_com_kldd0_travel-hack-2024_internal_entity.Review:

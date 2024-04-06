@@ -286,10 +286,10 @@ const docTemplate = `{
         "github_com_kldd0_travel-hack-2024_internal_entity.Image": {
             "type": "object",
             "properties": {
-                "caption": {
+                "src": {
                     "type": "string"
                 },
-                "url": {
+                "type": {
                     "type": "string"
                 }
             }
