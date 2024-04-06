@@ -15,7 +15,7 @@ func NewTourService(tourRepository repository.Tour) *TourService {
 	return &TourService{tourRepository: tourRepository}
 }
 
-func (s *TourService) GetTourById(ctx context.Context, id int) (entity.Tour, error) {
+func (s *TourService) GetById(ctx context.Context, id int) (entity.Tour, error) {
 	return s.tourRepository.GetById(ctx, id)
 }
 

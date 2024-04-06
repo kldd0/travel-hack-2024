@@ -20,6 +20,7 @@ func newTourRoutes(g *echo.Group, tourService service.Tour) *tourRoutes {
 
 	g.GET("/:id", r.getById)
 	g.GET("", r.getMany)
+	g.GET("/:id/review", r.getById)
 
 	return r
 }
@@ -32,7 +33,7 @@ type tourGetByIdInput struct {
 // @Description	Get tour by id
 // @Tags			tours
 // @Produce		json
-// @Success		200	{object}	v1.tourRoutes.getById.response
+// @Success		200	{object}	entity.Tour
 // @Failure		400	{object}	echo.HTTPError
 // @Failure		500	{object}	echo.HTTPError
 // @Router			/api/v1/tours/{id} [get]
@@ -49,19 +50,13 @@ func (r *tourRoutes) getById(c echo.Context) error {
 		return err
 	}
 
-	tour, err := entity.Tour{}, (error)(nil) /* r.tourService.GetById(c.Request().Context(), input.Id) */
+	tour, err := r.tourService.GetById(c.Request().Context(), input.Id)
 	if err != nil {
 		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return err
 	}
 
-	type response struct {
-		entity.Tour
-	}
-
-	return c.JSON(http.StatusOK, response{
-		tour,
-	})
+	return c.JSON(http.StatusOK, tour)
 }
 
 type ToursSearch struct {
@@ -120,7 +115,7 @@ type toursSearchAndFilterInput struct {
 // @Param			comfort		query	int		true	"Comfort level"
 // @Param			foodId		query	int		true	"Food ID"
 // @Produce		json
-// @Success		200	{object}	[]entity.Tour
+// @Success		200	{object}	[]entity.SimplifiedTourView
 // @Failure		400	{object}	echo.HTTPError
 // @Failure		500	{object}	echo.HTTPError
 // @Router			/api/v1/tours [get]
@@ -137,11 +132,16 @@ func (r *tourRoutes) getMany(c echo.Context) error {
 		return err
 	}
 
-	tours, err := []entity.Tour{entity.Tour{Id: 1}, entity.Tour{Id: 2}}, (error)(nil) /* r.tourService.GetMany(c.Request().Context()) */
+	tours, err := r.tourService.GetMany(c.Request().Context())
 	if err != nil {
 		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return err
 	}
 
-	return c.JSON(http.StatusOK, tours)
+	simplifiedTours := make([]entity.SimplifiedTourView, len(tours))
+	for _, tour := range tours {
+		simplifiedTours = append(simplifiedTours, entity.SimplifyingTour(tour))
+	}
+
+	return c.JSON(http.StatusOK, simplifiedTours)
 }
