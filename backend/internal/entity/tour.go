@@ -1,6 +1,18 @@
 package entity
 
-import "time"
+import (
+	"time"
+)
+
+type SimplifiedTourView struct {
+	Id         int    `json:"id"`
+	Title      string `json:"title"`
+	Location   string `json:"location"`
+	Category   string `json:"category"`
+	NightCount int    `json:"night_count"`
+	Type       []Tag  `json:"type"`
+	Rating     int    `json:"rating"`
+}
 
 type Tour struct {
 	Id              int        `json:"id"`
@@ -20,6 +32,7 @@ type Tour struct {
 	ImportantInfo   string     `json:"important_info"`
 	Media           []Image    `json:"media"`
 	Faq             string     `json:"faq"`
+	Rating          int        `json:"rating"`
 
 	/* embed count of companions and their age group */
 }
@@ -36,4 +49,16 @@ type Image struct {
 type TourDate struct {
 	Start time.Time `json:"start"`
 	End   time.Time `json:"end"`
+}
+
+func SimplifyingTour(tour Tour) SimplifiedTourView {
+	return SimplifiedTourView{
+		Id:         tour.Id,
+		Title:      tour.Title,
+		Location:   tour.Location,
+		Category:   tour.Category,
+		NightCount: tour.NightCount,
+		Type:       tour.Type,
+		Rating:     tour.Rating,
+	}
 }

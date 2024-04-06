@@ -159,7 +159,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tour"
+                                "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView"
                             }
                         }
                     },
@@ -192,7 +192,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_controller_http_v1.tourRoutes"
+                            "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tour"
                         }
                     },
                     "400": {
@@ -229,6 +229,35 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "night_count": {
+                    "type": "integer"
+                },
+                "rating": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tag"
+                    }
+                }
+            }
+        },
         "github_com_kldd0_travel-hack-2024_internal_entity.Tag": {
             "type": "object",
             "properties": {
@@ -246,12 +275,6 @@ const docTemplate = `{
                 "comfort_level": {
                     "type": "string"
                 },
-                "dates": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate"
-                    }
-                },
                 "description": {
                     "type": "string"
                 },
@@ -260,6 +283,13 @@ const docTemplate = `{
                 },
                 "faq": {
                     "type": "string"
+                },
+                "group_dates": {
+                    "description": "must be updated every req",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate"
+                    }
                 },
                 "id": {
                     "type": "integer"
@@ -283,6 +313,7 @@ const docTemplate = `{
                     }
                 },
                 "nearest_date": {
+                    "description": "must be updated every req",
                     "type": "string"
                 },
                 "night_count": {
@@ -300,6 +331,9 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
+                "rating": {
+                    "type": "integer"
+                },
                 "title": {
                     "type": "string"
                 },
@@ -314,19 +348,13 @@ const docTemplate = `{
         "github_com_kldd0_travel-hack-2024_internal_entity.TourDate": {
             "type": "object",
             "properties": {
-                "End": {
+                "end": {
                     "type": "string"
                 },
-                "Start": {
-                    "type": "string"
-                },
-                "Var": {
+                "start": {
                     "type": "string"
                 }
             }
-        },
-        "internal_controller_http_v1.tourRoutes": {
-            "type": "object"
         }
     },
     "securityDefinitions": {

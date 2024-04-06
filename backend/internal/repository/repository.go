@@ -5,6 +5,9 @@ import (
 	"errors"
 
 	"github.com/kldd0/travel-hack-2024/internal/entity"
+	"github.com/kldd0/travel-hack-2024/internal/repository/postgres"
+
+	pgdb "github.com/kldd0/travel-hack-2024/internal/pkg/postgres"
 )
 
 var (
@@ -45,5 +48,7 @@ type Repositories struct {
 }
 
 func NewRepositories() *Repositories {
-	return &Repositories{}
+	return &Repositories{
+		Tour: postgres.NewTourRepository((*pgdb.Postgres)(nil)),
+	}
 }
