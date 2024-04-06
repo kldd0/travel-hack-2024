@@ -15,6 +15,56 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/cities/{prefix}": {
+            "get": {
+                "description": "Get city by prefix",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cities"
+                ],
+                "summary": "Get city by prefix",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "City name prefix",
+                        "name": "prefix",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Output limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.City"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/tours": {
             "get": {
                 "description": "Get tours according to search and filter params",
@@ -183,6 +233,15 @@ const docTemplate = `{
                     "tours"
                 ],
                 "summary": "Get tour by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Tour id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -213,6 +272,17 @@ const docTemplate = `{
                 "message": {}
             }
         },
+        "github_com_kldd0_travel-hack-2024_internal_entity.City": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_kldd0_travel-hack-2024_internal_entity.Image": {
             "type": "object",
             "properties": {
@@ -220,6 +290,50 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.Review": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "description": "автор отзыва",
+                    "type": "string"
+                },
+                "frequency": {
+                    "description": "частота посещения",
+                    "type": "string"
+                },
+                "liked": {
+                    "description": "рейтинг",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "local_resident": {
+                    "description": "местный?",
+                    "type": "boolean"
+                },
+                "negative": {
+                    "description": "недостатки",
+                    "type": "string"
+                },
+                "positive": {
+                    "description": "достоинства",
+                    "type": "string"
+                },
+                "tour_id": {
+                    "description": "id тура",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "тип отдыха (в одиночку. с детьми...)",
+                    "type": "string"
+                },
+                "video": {
+                    "description": "ссылка на видео",
                     "type": "string"
                 }
             }
@@ -279,13 +393,6 @@ const docTemplate = `{
                 "faq": {
                     "type": "string"
                 },
-                "group_dates": {
-                    "description": "must be updated every req",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate"
-                    }
-                },
                 "id": {
                     "type": "integer"
                 },
@@ -329,8 +436,22 @@ const docTemplate = `{
                 "rating": {
                     "type": "integer"
                 },
+                "reviews": {
+                    "description": "массиов отзывов",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Review"
+                    }
+                },
                 "title": {
                     "type": "string"
+                },
+                "tour_dates": {
+                    "description": "must be updated every req",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate"
+                    }
                 },
                 "type": {
                     "type": "array",

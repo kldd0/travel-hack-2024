@@ -29,6 +29,7 @@ func NewRouter(handler *echo.Echo, services *service.Services) {
 	v1 := handler.Group("/api/v1")
 	{
 		newTourRoutes(v1.Group("/tours"), services.Tour, services.Review, services.Order)
+		newCityRoutes(v1.Group("/cities"), services.City)
 		// newReviewRoutes(v1.Group("/review"), services.Review)
 	}
 }

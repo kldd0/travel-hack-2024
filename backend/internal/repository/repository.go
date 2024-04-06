@@ -38,17 +38,25 @@ type Order interface {
 	Process(ctx context.Context /* params for filtering */) error // обработка заявки
 }
 
+type City interface {
+	GetMany(ctx context.Context, prefix string, limit int) ([]entity.City, error)
+}
+
 type Repositories struct {
 	User
 	Account
 	Review
 	Tour
 	Order
+	City
+
 	// Reservation
 }
 
 func NewRepositories() *Repositories {
+	nilPgPointer := (*pgdb.Postgres)(nil)
 	return &Repositories{
-		Tour: postgres.NewTourRepository((*pgdb.Postgres)(nil)),
+		Tour: postgres.NewTourRepository(nilPgPointer),
+		City: postgres.NewCityRepository(nilPgPointer),
 	}
 }

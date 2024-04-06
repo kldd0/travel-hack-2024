@@ -18,15 +18,20 @@ type Review interface {
 
 type Order interface {
 	GetOrderById(ctx context.Context, id int /* params for filtering */) (entity.Order, error)
-	Process(ctx context.Context /* params for filtering */) error // обработка заявки
+}
+
+type City interface {
+	GetMany(ctx context.Context, prefix string, limit int) ([]entity.City, error)
 }
 
 type Services struct {
 	// Auth        Auth
 	// Account     Account
+
+	Tour   Tour
 	Order  Order
 	Review Review
-	Tour   Tour
+	City   City
 }
 
 type ServicesDependencies struct {
@@ -36,5 +41,6 @@ type ServicesDependencies struct {
 func NewServices(deps ServicesDependencies) *Services {
 	return &Services{
 		Tour: deps.Repos.Tour,
+		City: deps.Repos.City,
 	}
 }

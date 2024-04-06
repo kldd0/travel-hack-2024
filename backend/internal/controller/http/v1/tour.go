@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -16,7 +15,12 @@ type tourRoutes struct {
 	tourOrder   service.Order
 }
 
-func newTourRoutes(g *echo.Group, tourService service.Tour, reviewService service.Review, orderService service.Order) *tourRoutes {
+func newTourRoutes(
+	g *echo.Group,
+	tourService service.Tour,
+	reviewService service.Review,
+	orderService service.Order,
+) *tourRoutes {
 	r := &tourRoutes{
 		tourService: tourService,
 		tourReview:  reviewService,
@@ -26,7 +30,7 @@ func newTourRoutes(g *echo.Group, tourService service.Tour, reviewService servic
 	g.GET("", r.getMany)
 	g.GET("/:id", r.getById)
 
-	g.GET("/:id/order", r.getOrder)
+	g.GET("/:id/order", r.makeOrder)
 
 	return r
 }
@@ -35,19 +39,15 @@ type tourGetByIdInput struct {
 	Id int `param:"id" validate:"required"`
 }
 
-type reviewGetById struct {
-	Id int `param:"id" validate:"required"`
-}
-
 // @Summary		Get tour by id
 // @Description	Get tour by id
 // @Tags			tours
 // @Produce		json
+// @Param			id	path		int	true	"Tour id"
 // @Success		200	{object}	entity.Tour
 // @Failure		400	{object}	echo.HTTPError
 // @Failure		500	{object}	echo.HTTPError
 // @Router			/api/v1/tours/{id} [get]
-// выплевывает инфу о туре
 func (r *tourRoutes) getById(c echo.Context) error {
 	var input tourGetByIdInput
 
@@ -143,8 +143,6 @@ type toursSearchAndFilterInput struct {
 // @Failure		400	{object}	echo.HTTPError
 // @Failure		500	{object}	echo.HTTPError
 // @Router			/api/v1/tours [get]
-
-// выплевываем мини карточки
 func (r *tourRoutes) getMany(c echo.Context) error {
 	var input toursSearchAndFilterInput
 
@@ -152,15 +150,6 @@ func (r *tourRoutes) getMany(c echo.Context) error {
 		ErrorResponse(c, http.StatusBadRequest, "invalid query parameters")
 		return err
 	}
-
-	fmt.Println(input)
-
-	/*
-		if err := c.Validate(input); err != nil {
-			ErrorResponse(c, http.StatusBadRequest, err.Error())
-			return err
-		}
-	*/
 
 	tours, err := r.tourService.GetMany(c.Request().Context())
 	if err != nil {
@@ -176,7 +165,7 @@ func (r *tourRoutes) getMany(c echo.Context) error {
 	return c.JSON(http.StatusOK, simplifiedTours)
 }
 
-func (r *tourRoutes) getOrder(c echo.Context) error {
+func (r *tourRoutes) makeOrder(c echo.Context) error {
 	var order entity.Order
 
 	if err := c.Bind(&order); err != nil {
