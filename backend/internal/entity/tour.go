@@ -49,8 +49,8 @@ type Tag struct {
 }
 
 type Image struct {
-	Caption string `json:"caption"`
-	URL     string `json:"url"`
+	Type string `json:"type"`
+	Src  string `json:"src"`
 }
 
 type TourDate struct {
