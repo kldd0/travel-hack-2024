@@ -20,7 +20,7 @@ import (
 //	@version		1.0
 //	@description	Additional service for RUSSPASS
 
-//	@host		127.0.0.1:8080
+//	@host		185.104.251.6:8080
 //	@BasePath	/
 
 //	@securityDefinitions.apikey	JWT

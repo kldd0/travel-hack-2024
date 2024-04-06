@@ -56,8 +56,14 @@ definitions:
         type: string
       id:
         type: integer
+      is_liked:
+        type: boolean
       location:
         type: string
+      media:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Image'
+        type: array
       night_count:
         type: integer
       rating:
@@ -94,6 +100,8 @@ definitions:
         items:
           type: string
         type: array
+      is_liked:
+        type: boolean
       location:
         type: string
       media:
@@ -139,7 +147,7 @@ definitions:
       start:
         type: string
     type: object
-host: 127.0.0.1:8080
+host: 185.104.251.6:8080
 info:
   contact: {}
   description: Additional service for RUSSPASS

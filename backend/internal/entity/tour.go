@@ -6,14 +6,15 @@ import (
 
 // выплевывает мини инфу о мини карточке
 type SimplifiedTourView struct {
-	Id         int    `json:"id"`
-	Title      string `json:"title"`
-	Location   string `json:"location"`
-	Category   string `json:"category"`
-	NightCount int    `json:"night_count"`
-	Type       []Tag  `json:"type"`
-	Rating     int    `json:"rating"`
-	IsLiked    bool   `json:"is_liked"`
+	Id         int     `json:"id"`
+	Title      string  `json:"title"`
+	Location   string  `json:"location"`
+	Category   string  `json:"category"`
+	NightCount int     `json:"night_count"`
+	Type       []Tag   `json:"type"`
+	Rating     int     `json:"rating"`
+	IsLiked    bool    `json:"is_liked"`
+	Media      []Image `json:"media"`
 }
 
 type Tour struct {
@@ -66,6 +67,7 @@ func SimplifyingTour(tour Tour) SimplifiedTourView {
 		NightCount: tour.NightCount,
 		Type:       tour.Type,
 		Rating:     tour.Rating,
+		Media:      tour.Media,
 		IsLiked:    tour.IsLiked,
 	}
 }

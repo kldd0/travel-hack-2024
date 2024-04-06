@@ -347,8 +347,17 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "is_liked": {
+                    "type": "boolean"
+                },
                 "location": {
                     "type": "string"
+                },
+                "media": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Image"
+                    }
                 },
                 "night_count": {
                     "type": "integer"
@@ -404,6 +413,9 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
+                },
+                "is_liked": {
+                    "type": "boolean"
                 },
                 "location": {
                     "type": "string"
@@ -486,7 +498,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "127.0.0.1:8080",
+	Host:             "185.104.251.6:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Tour Management Service",
