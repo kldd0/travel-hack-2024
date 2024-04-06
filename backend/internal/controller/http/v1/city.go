@@ -2,6 +2,7 @@ package v1
 
 import (
 	"net/http"
+	"net/url"
 
 	_ "github.com/kldd0/travel-hack-2024/internal/entity"
 	"github.com/kldd0/travel-hack-2024/internal/service"
@@ -24,7 +25,7 @@ func newCityRoutes(g *echo.Group, cityService service.City) *cityRoutes {
 
 type cityGetManyLimitInput struct {
 	Prefix string `param:"prefix" validate:"required"`
-	Limit  int    `query:"limit" validate:"required"`
+	Limit  int    `query:"limit"`
 }
 
 // @Summary		Get city by prefix
@@ -50,6 +51,18 @@ func (r *cityRoutes) getMany(c echo.Context) error {
 		return err
 	}
 
+	prefix, err := url.QueryUnescape(input.Prefix)
+	if err != nil {
+		ErrorResponse(c, http.StatusBadRequest, "incorrect parameter")
+		return err
+	}
+
+	// default limit value
+	if input.Limit == 0 {
+		input.Limit = 10
+	}
+
+	input.Prefix = prefix
 	cities, err := r.cityService.GetMany(c.Request().Context(), input.Prefix, input.Limit)
 	if err != nil {
 		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
