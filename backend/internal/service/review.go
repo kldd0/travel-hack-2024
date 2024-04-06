@@ -17,5 +17,5 @@ func NewReviewService(reviewRepository repository.Review) *ReviewService {
 
 // вернем отзывы по нужному туру
 func (s *ReviewService) GetAllReviewsByTourId(ctx context.Context) ([]entity.Review, error) {
-	return s.reviewRepository.GetMany(ctx)
+	return s.reviewRepository.GetAllById(ctx)
 }

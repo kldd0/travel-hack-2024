@@ -30,7 +30,12 @@ type Tour interface {
 }
 
 type Review interface {
-	GetMany(ctx context.Context /* params for filtering */) ([]entity.Review, error)
+	GetAllById(ctx context.Context /* params for filtering */) ([]entity.Review, error)
+}
+
+type Order interface {
+	GetOrderById(ctx context.Context, id int /* params for filtering */) (entity.Order, error)
+	Process(ctx context.Context /* params for filtering */) error // обработка заявки
 }
 
 type Repositories struct {
@@ -38,7 +43,7 @@ type Repositories struct {
 	Account
 	Review
 	Tour
-
+	Order
 	// Reservation
 }
 
