@@ -13,6 +13,7 @@ type SimplifiedTourView struct {
 	NightCount int    `json:"night_count"`
 	Type       []Tag  `json:"type"`
 	Rating     int    `json:"rating"`
+	IsLiked    bool   `json:"is_liked"`
 }
 
 type Tour struct {
@@ -34,6 +35,7 @@ type Tour struct {
 	Media           []Image    `json:"media"`
 	Faq             string     `json:"faq"`
 	Rating          int        `json:"rating"`
+	IsLiked         bool       `json:"is_liked"`
 
 	Reviews []Review `json:"reviews"` // массиов отзывов
 
@@ -64,5 +66,6 @@ func SimplifyingTour(tour Tour) SimplifiedTourView {
 		NightCount: tour.NightCount,
 		Type:       tour.Type,
 		Rating:     tour.Rating,
+		IsLiked:    tour.IsLiked,
 	}
 }

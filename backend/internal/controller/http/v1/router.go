@@ -17,7 +17,11 @@ func NewRouter(handler *echo.Echo, services *service.Services) {
 	}))
 	handler.Use(DefaultRequestLogger())
 
-	handler.Use(middleware.CORS())
+	handler.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
+		AllowMethods: []string{echo.GET, echo.POST},
+	}))
 
 	handler.GET("/health", func(c echo.Context) error { return c.NoContent(200) })
 	handler.GET("/swagger/*", echoSwagger.WrapHandler)
