@@ -11,14 +11,20 @@ import (
 
 type tourRoutes struct {
 	tourService service.Tour
+	tourReview  service.Review
+	tourOrder   service.Order
 }
 
-func newTourRoutes(g *echo.Group, tourService service.Tour) *tourRoutes {
+func newTourRoutes(g *echo.Group, tourService service.Tour, reviewService service.Review, orderService service.Order) *tourRoutes {
 	r := &tourRoutes{
 		tourService: tourService,
+		tourReview:  reviewService,
+		tourOrder:   orderService,
 	}
 	g.GET("/:id", r.getById)
 	g.GET("", r.getMany)
+
+	g.GET("/:id/order", r.getOrder)
 
 	return r
 }
@@ -39,6 +45,7 @@ type reviewGetById struct {
 // @Failure		400	{object}	echo.HTTPError
 // @Failure		500	{object}	echo.HTTPError
 // @Router			/api/v1/tours/{id} [get]
+// выплевывает инфу о туре
 func (r *tourRoutes) getById(c echo.Context) error {
 	var input tourGetByIdInput
 
@@ -57,6 +64,15 @@ func (r *tourRoutes) getById(c echo.Context) error {
 		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return err
 	}
+
+	//получаем отзывы
+	reviews, err := r.tourReview.GetAllById(c.Request().Context())
+	if err != nil {
+		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
+		return err
+	}
+
+	tour.Reviews = reviews
 
 	return c.JSON(http.StatusOK, tour)
 }
@@ -121,6 +137,8 @@ type toursSearchAndFilterInput struct {
 // @Failure		400	{object}	echo.HTTPError
 // @Failure		500	{object}	echo.HTTPError
 // @Router			/api/v1/tours [get]
+
+// выплевываем мини карточки
 func (r *tourRoutes) getMany(c echo.Context) error {
 	var input toursSearchAndFilterInput
 
@@ -146,4 +164,26 @@ func (r *tourRoutes) getMany(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, simplifiedTours)
+}
+
+func (r *tourRoutes) getOrder(c echo.Context) error {
+	var order entity.Order
+
+	if err := c.Bind(&order); err != nil {
+		ErrorResponse(c, http.StatusBadRequest, "invalid query parameters")
+		return err
+	}
+
+	if err := c.Validate(order); err != nil {
+		ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return err
+	}
+
+	order, err := r.tourOrder.GetOrderById(c.Request().Context(), order.OrderId)
+	if err != nil {
+		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
+		return err
+	}
+
+	return c.JSON(http.StatusOK, order)
 }

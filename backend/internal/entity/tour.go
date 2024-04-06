@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// выплевывает мини инфу о мини карточке
 type SimplifiedTourView struct {
 	Id         int    `json:"id"`
 	Title      string `json:"title"`
@@ -33,7 +34,7 @@ type Tour struct {
 	Media           []Image    `json:"media"`
 	Faq             string     `json:"faq"`
 	Rating          int        `json:"rating"`
-
+	Reviews         []Review   `json:"reviews"` // массиов отзывов
 	/* embed count of companions and their age group */
 }
 
