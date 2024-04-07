@@ -19,10 +19,13 @@ services:
   postgres:
     container_name: postgres
     image: postgres
-    volumes:
-      - pg-data:/var/lib/postgresql/data
     env_file:
       - .env
+    environment:
+      POSTGRES_DB: russpass
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - pg-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: unless-stopped

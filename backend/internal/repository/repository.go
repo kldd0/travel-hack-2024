@@ -2,17 +2,11 @@ package repository
 
 import (
 	"context"
-	"errors"
 
 	"github.com/kldd0/travel-hack-2024/internal/entity"
 	"github.com/kldd0/travel-hack-2024/internal/repository/postgres"
 
 	pgdb "github.com/kldd0/travel-hack-2024/internal/pkg/postgres"
-)
-
-var (
-	ErrNotFound      = errors.New("not found")
-	ErrAlreadyExists = errors.New("already exists")
 )
 
 type User interface {
@@ -54,11 +48,10 @@ type Repositories struct {
 	// Reservation
 }
 
-func NewRepositories() *Repositories {
-	nilPgPointer := (*pgdb.Postgres)(nil)
+func NewRepositories(pg *pgdb.Postgres) *Repositories {
 	return &Repositories{
-		Tour:   postgres.NewTourRepository(nilPgPointer),
-		Review: postgres.NewReviewRepository(nilPgPointer),
-		City:   postgres.NewCityRepository(nilPgPointer),
+		Tour:   postgres.NewTourRepository(pg),
+		Review: postgres.NewReviewRepository(pg),
+		City:   postgres.NewCityRepository(pg),
 	}
 }

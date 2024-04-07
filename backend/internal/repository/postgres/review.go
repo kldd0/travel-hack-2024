@@ -8,7 +8,7 @@ import (
 )
 
 type ReviewRepository struct {
-	pg *postgres.Postgres
+	*postgres.Postgres
 }
 
 func NewReviewRepository(pg *postgres.Postgres) *ReviewRepository {

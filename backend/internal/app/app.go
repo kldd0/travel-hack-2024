@@ -9,6 +9,7 @@ import (
 	"github.com/kldd0/travel-hack-2024/internal/config"
 	v1 "github.com/kldd0/travel-hack-2024/internal/controller/http/v1"
 	httpserver "github.com/kldd0/travel-hack-2024/internal/pkg/http-server"
+	"github.com/kldd0/travel-hack-2024/internal/pkg/postgres"
 	"github.com/kldd0/travel-hack-2024/internal/pkg/validator"
 	"github.com/kldd0/travel-hack-2024/internal/repository"
 	"github.com/kldd0/travel-hack-2024/internal/service"
@@ -34,20 +35,18 @@ func Run() {
 	// Setup logger
 	SetLogger(config.Env)
 
-	/*
-		// Repositories
-		log.Info().Msg("Initializing postgres...")
-		pg, err := postgres.New(config.Postgres.DSN, postgres.MaxPoolSize(config.Postgres.MaxPoolSize))
-		if err != nil {
-			log.Err(fmt.Errorf("app.Run.postgres.NewServices: %w", err))
-			os.Exit(-1)
-		}
-		defer pg.Close()
-	*/
+	// Repositories
+	log.Info().Msg("Initializing postgres...")
+	pg, err := postgres.New(config.Postgres.DSN, postgres.MaxPoolSize(config.Postgres.MaxPoolSize))
+	if err != nil {
+		log.Err(fmt.Errorf("app.Run.postgres.NewServices: %w", err))
+		os.Exit(-1)
+	}
+	defer pg.Close()
 
 	// Repositories
 	log.Info().Msg("Initializing repositories")
-	repositories := repository.NewRepositories()
+	repositories := repository.NewRepositories(pg)
 
 	// Services dependencies
 	log.Info().Msg("Initializing services")

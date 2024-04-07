@@ -8,8 +8,9 @@ import (
 )
 
 type Tour interface {
-	GetById(ctx context.Context, id int) (entity.Tour, error)
-	GetMany(ctx context.Context /* ...filtering params */) ([]entity.Tour, error)
+	GetById(ctx context.Context, id int) (entity.DTOTour, error)
+	GetMany(ctx context.Context /* ...filtering params */) ([]entity.SimplifiedTourView, error)
+	GetHotMany(ctx context.Context /* ...filtering params */) ([]entity.SimplifiedTourView, error)
 }
 
 type Review interface {
@@ -40,8 +41,8 @@ type ServicesDependencies struct {
 
 func NewServices(deps ServicesDependencies) *Services {
 	return &Services{
-		Tour:   deps.Repos.Tour,
-		Review: deps.Repos.Review,
-		City:   deps.Repos.City,
+		Tour:   NewTourService(deps.Repos.Tour),
+		Review: NewReviewService(deps.Repos.Review),
+		City:   NewCityService(deps.Repos.City),
 	}
 }

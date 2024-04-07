@@ -11,7 +11,77 @@ definitions:
       name:
         type: string
     type: object
-  github_com_kldd0_travel-hack-2024_internal_entity.Image:
+  github_com_kldd0_travel-hack-2024_internal_entity.DTOTour:
+    properties:
+      category:
+        type: string
+      comfort_level:
+        type: string
+      description:
+        type: string
+      difficulty_level:
+        type: string
+      faq:
+        type: string
+      id:
+        type: integer
+      important_info:
+        type: string
+      included:
+        items:
+          type: string
+        type: array
+      is_liked:
+        type: boolean
+      location:
+        type: string
+      map:
+        type: string
+      media:
+        $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaSectors'
+      nights_count:
+        type: integer
+      not_included:
+        items:
+          type: string
+        type: array
+      program:
+        items:
+          type: string
+        type: array
+      rating:
+        type: integer
+      reviews:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Review'
+        type: array
+      tags:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+      tour_dates:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate'
+        type: array
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.MediaSectors:
+    properties:
+      acc:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
+        type: array
+      head:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
+        type: array
+      program:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
+        type: array
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.MediaType:
     properties:
       src:
         type: string
@@ -62,80 +132,18 @@ definitions:
         type: string
       media:
         items:
-          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Image'
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
         type: array
-      night_count:
+      nights_count:
         type: integer
       rating:
         type: integer
-      title:
-        type: string
-      type:
-        items:
-          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tag'
-        type: array
-    type: object
-  github_com_kldd0_travel-hack-2024_internal_entity.Tag:
-    properties:
-      title:
-        type: string
-    type: object
-  github_com_kldd0_travel-hack-2024_internal_entity.Tour:
-    properties:
-      category:
-        type: string
-      comfort_level:
-        type: string
-      description:
-        type: string
-      difficulty_level:
-        type: string
-      faq:
-        type: string
-      id:
-        type: integer
-      important_info:
-        type: string
-      included:
+      tags:
         items:
           type: string
         type: array
-      is_liked:
-        type: boolean
-      location:
-        type: string
-      media:
-        items:
-          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Image'
-        type: array
-      night_count:
-        type: integer
-      not_included:
-        items:
-          type: string
-        type: array
-      program:
-        items:
-          type: string
-        type: array
-      rating:
-        type: integer
-      reviews:
-        description: массиов отзывов
-        items:
-          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Review'
-        type: array
       title:
         type: string
-      tour_dates:
-        description: must be updated every req
-        items:
-          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate'
-        type: array
-      type:
-        items:
-          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tag'
-        type: array
     type: object
   github_com_kldd0_travel-hack-2024_internal_entity.TourDate:
     properties:
@@ -304,7 +312,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tour'
+            $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.DTOTour'
         "400":
           description: Bad Request
           schema:

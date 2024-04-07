@@ -114,7 +114,7 @@ var (
 )
 
 type CityRepository struct {
-	pg *postgres.Postgres
+	*postgres.Postgres
 }
 
 func NewCityRepository(pg *postgres.Postgres) *CityRepository {

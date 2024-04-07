@@ -2,77 +2,17 @@ package postgres
 
 import (
 	"context"
-	"time"
+	"errors"
+	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/kldd0/travel-hack-2024/internal/entity"
 	"github.com/kldd0/travel-hack-2024/internal/pkg/postgres"
-)
-
-/* temporarily hardcoded data */
-var (
-	test1 = entity.Tour{
-		Id:       1,
-		Title:    "Историко-культурный маршрут по Алтаю",
-		Location: "Алтай",
-		Category: "Тур",
-		Type: []entity.Tag{
-			{Title: "Экскурсионный"},
-			{Title: "Выездной"},
-		},
-		Desc:       "Историко-культурный маршрут по Алтаю - это уникальная возможность окунуться в мир древних традиций и красот природы одного из самых загадочных регионов России - Алтая.\nЗа 5 дней вы побываете в самых живописных местах региона: от загадочной Курайской степи, где вас ждут национальные праздники и мастер-классы местных ремесленников, до живописного Телецкого озера, о котором ходят легенды.\nВы познакомитесь с удивительным миром алтайской культуры, посетите древние памятники и музеи, узнаете об алтайских обрядах и традициях.\nА экскурсия в долину Чулышман позволит вам понаблюдать за уникальной флорой и фауной, а также восхититься древними петроглифами. Все это будет организовано комфортно и беззаботно: проживание в уютных гостиницах, вкусное питание, профессиональные гиды и удобный транспорт.\nОтправляйтесь в это увлекательное путешествие и погрузитесь в неповторимую атмосферу Алтая!",
-		NightCount: 5,
-		Program: []string{
-			"Прибытие в Горно-Алтайск\n9:00-10:00 Встреча группы в аэропорту/на вокзале\n10:00-12:00 Трансфер в отель, размещение\n14:00-18:00 Экскурсия по Горно-Алтайску с посещением музеев и исторических достопримечательностей\n19:00-21:30 Ужин в национальном стиле",
-			"Курайская степь\n10:30 - Поездка в Курайскую степь\n11:45-15:25 Посещение национальных поселений, знакомство с традициями и ремеслами местных жителей\n16:30-19:00 Национальные праздники и танцы\n20:30 - Возвращение в город, отдых",
-			"Телецкое озеро\n9:45 - Поездка в Телецкое озеро\n11:00-13:45 Экскурсия на катерах по озеру, наслаждение живописными пейзажами\n14:30-17:30 Посещение музеев и памятников природы\n18:30 -  Ужин на берегу озера",
-			"Долина Чулышман\n8:30 - Поездка в долину Чулышман\n10:00-13:30 Посещение древних петроглифов, изучение истории исследований\n14:00-17:00 Купание в горных озерах, пикник на природе\n19:00 - Возвращение в город, досуг на выбор",
-			"Возвращение в Горно-Алтайск\n9:00-18:00 Свободное время для покупок сувениров, посещение рынков\n19:00 - Отъезд в аэропорт/на вокзал\n20:00 - Прощание с гидом и памятные подарки для участников тура",
-		},
-		Included: []string{
-			"Проживание в отелях на базе завтраков",
-			"Транспортные услуги включая трансферы и экскурсии",
-			"Услуги профессионального гида",
-			"Входные билеты в музеи и на экскурсии",
-			"Питание согласно программе тура",
-		},
-		NotIncluded: []string{
-			"Алкогольные напитки",
-			"Дополнительные экскурсии и развлечения",
-			"Услуги фотографа",
-		},
-		DifficultyLevel: "Базовый",
-		ComfortLevel:    "Высокий",
-		Dates: []entity.TourDate{
-			{
-				Start: time.Date(2024, 04, 15, 0, 0, 0, 0, time.Local),
-				End:   time.Date(2024, 04, 20, 0, 0, 0, 0, time.Local),
-			},
-			{
-				Start: time.Date(2024, 04, 21, 0, 0, 0, 0, time.Local),
-				End:   time.Date(2024, 04, 26, 0, 0, 0, 0, time.Local),
-			},
-		},
-		ImportantInfo: "Подготовка к туру:\nПодготовьте удобную обувь и одежду для прогулок и экскурсий на природе\nВозьмите с собой солнцезащитные средства, головной убор, средства от комаров и других насекомых\nУбедитесь, что у вас есть документы: паспорт, страховка, билеты\nЗаранее ознакомьтесь с программой тура и списком вещей, которые необходимо взять с собой.\nКак оформить дополнительное место:\nДля оформления дополнительного места в туре необходимо связаться с менеджером туристической компании, указав количество дополнительных участников и предпочтения по размещению и питанию\nДополнительные места могут быть оформлены при наличии свободных мест в гостиницах и на транспорте, либо в случае возможности приобретения дополнительных билетов на экскурсии\nОплата за дополнительное место производится в соответствии с тарифами туроператора, дополнительные услуги могут быть оплачены как вместе с основным туром, так и отдельно.\nУсловия отмены:\nВ случае отмены тура до 7 дней до начала, возврат средств осуществляется без комиссии\nВ случае отмены менее чем за 7 дней до начала тура, возврат средств может быть произведен с учетом штрафных условий ВАЖНО: при отсутствии медицинских документов или противопоказаний от врача, возврат средств не производится",
-		Media: []entity.Image{
-			{Type: "image", Src: "test/img/image1.jpg"},
-			{Type: "image", Src: "test/img/image.jpg"},
-		},
-		Faq: "faq",
-	}
-	test2  = entity.Tour{Id: 2, Title: "Волшебство водопадов: путешествие по каскадам"}
-	test3  = entity.Tour{Id: 3, Title: "Адреналин на высоте: альпинистский тур на вершину горы"}
-	test4  = entity.Tour{Id: 4, Title: "Волшебство озер: тур к кристально чистым водоемам"}
-	test5  = entity.Tour{Id: 5, Title: "Открытие гастрономических сокровищ Осетии: тур для гурманов"}
-	test6  = entity.Tour{Id: 6, Title: "Горный хребет России: приключения на Кавказе"}
-	test7  = entity.Tour{Id: 7, Title: "Шелковый путь Кавказа: путешествие по культурным тропам"}
-	test8  = entity.Tour{Id: 8, Title: "Встреча с душой Кавказа: этнотур к горцам и пастушьим племенам"}
-	test9  = entity.Tour{Id: 9, Title: "Приключение в горах: треккинг по высокогорным маршрутам"}
-	test10 = entity.Tour{Id: 10, Title: "Зеленые холмы Осетии: экскурсия по горным лугам и лесам региона"}
-	test11 = entity.Tour{Id: 11, Title: "В гармонии с природой: медитативные прогулки по лесу и полям"}
+	"github.com/kldd0/travel-hack-2024/internal/repository/repoerrs"
 )
 
 type TourRepository struct {
-	pg *postgres.Postgres
+	*postgres.Postgres
 }
 
 func NewTourRepository(pg *postgres.Postgres) *TourRepository {
@@ -80,9 +20,87 @@ func NewTourRepository(pg *postgres.Postgres) *TourRepository {
 }
 
 func (r *TourRepository) GetById(ctx context.Context, id int) (entity.Tour, error) {
-	return test1, nil
+	sql, args, _ := r.Builder.
+		Select("*").
+		From("tours").
+		Where("id = ?", id).
+		ToSql()
+
+	var tour entity.Tour
+	err := r.Pool.QueryRow(ctx, sql, args...).Scan(
+		&tour.Id,
+		&tour.Title,
+		&tour.Location,
+		&tour.Category,
+		&tour.Tags, /* from []text */
+		&tour.Desc,
+		&tour.NightsCount,
+		&tour.Program,     /* from []text */
+		&tour.Included,    /* from []text */
+		&tour.NotIncluded, /* from []text */
+		&tour.DifficultyLevel,
+		&tour.ComfortLevel,
+		&tour.Dates, /* from []text */
+		&tour.ImportantInfo,
+		&tour.HeadMedia,         /* from []text */
+		&tour.ProgramMedia,      /* from []text */
+		&tour.AccomodationMedia, /* from []text */
+		&tour.MapSrc,
+		&tour.Faq,
+		&tour.Rating,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return entity.Tour{}, repoerrs.ErrNotFound
+		}
+		return entity.Tour{}, fmt.Errorf("TourRepository.GetTourById - r.Pool.QueryRow: %v", err)
+	}
+
+	return tour, nil
 }
 
 func (r *TourRepository) GetMany(ctx context.Context) ([]entity.Tour, error) {
-	return []entity.Tour{test1, test3, test4, test8}, nil
+	sql, args, _ := r.Builder.
+		Select("*").
+		From("tours").
+		ToSql()
+
+	rows, err := r.Pool.Query(ctx, sql, args...)
+	if err != nil {
+		return nil, fmt.Errorf("TourRepository.GetMany - r.Pool.Query: %v", err)
+	}
+	defer rows.Close()
+
+	var tours []entity.Tour
+	for rows.Next() {
+		var tour entity.Tour
+		err := rows.Scan(
+			&tour.Id,
+			&tour.Title,
+			&tour.Location,
+			&tour.Category,
+			&tour.Tags,
+			&tour.Desc,
+			&tour.NightsCount,
+			&tour.Program,
+			&tour.Included,
+			&tour.NotIncluded,
+			&tour.DifficultyLevel,
+			&tour.ComfortLevel,
+			&tour.Dates,
+			&tour.ImportantInfo,
+			&tour.HeadMedia,
+			&tour.ProgramMedia,
+			&tour.AccomodationMedia,
+			&tour.MapSrc,
+			&tour.Faq,
+			&tour.Rating,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("TourRepository.GetAllProducts - rows.Scan: %v", err)
+		}
+		tours = append(tours, tour)
+	}
+
+	return tours, nil
 }

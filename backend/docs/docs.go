@@ -404,7 +404,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tour"
+                            "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.DTOTour"
                         }
                     },
                     "400": {
@@ -441,7 +441,113 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_kldd0_travel-hack-2024_internal_entity.Image": {
+        "github_com_kldd0_travel-hack-2024_internal_entity.DTOTour": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "comfort_level": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "difficulty_level": {
+                    "type": "string"
+                },
+                "faq": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "important_info": {
+                    "type": "string"
+                },
+                "included": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_liked": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "map": {
+                    "type": "string"
+                },
+                "media": {
+                    "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaSectors"
+                },
+                "nights_count": {
+                    "type": "integer"
+                },
+                "not_included": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "program": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "rating": {
+                    "type": "integer"
+                },
+                "reviews": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Review"
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                },
+                "tour_dates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate"
+                    }
+                }
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.MediaSectors": {
+            "type": "object",
+            "properties": {
+                "acc": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType"
+                    }
+                },
+                "head": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType"
+                    }
+                },
+                "program": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType"
+                    }
+                }
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.MediaType": {
             "type": "object",
             "properties": {
                 "src": {
@@ -514,116 +620,23 @@ const docTemplate = `{
                 "media": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Image"
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType"
                     }
                 },
-                "night_count": {
+                "nights_count": {
                     "type": "integer"
                 },
                 "rating": {
                     "type": "integer"
                 },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tag"
-                    }
-                }
-            }
-        },
-        "github_com_kldd0_travel-hack-2024_internal_entity.Tag": {
-            "type": "object",
-            "properties": {
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_kldd0_travel-hack-2024_internal_entity.Tour": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "comfort_level": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "difficulty_level": {
-                    "type": "string"
-                },
-                "faq": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "important_info": {
-                    "type": "string"
-                },
-                "included": {
+                "tags": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
                 },
-                "is_liked": {
-                    "type": "boolean"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "media": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Image"
-                    }
-                },
-                "night_count": {
-                    "type": "integer"
-                },
-                "not_included": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "program": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "rating": {
-                    "type": "integer"
-                },
-                "reviews": {
-                    "description": "массиов отзывов",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Review"
-                    }
-                },
                 "title": {
                     "type": "string"
-                },
-                "tour_dates": {
-                    "description": "must be updated every req",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate"
-                    }
-                },
-                "type": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Tag"
-                    }
                 }
             }
         },

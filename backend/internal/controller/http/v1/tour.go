@@ -1,11 +1,12 @@
 package v1
 
 import (
+	"errors"
 	"net/http"
-	"sort"
 	"time"
 
 	"github.com/kldd0/travel-hack-2024/internal/entity"
+	"github.com/kldd0/travel-hack-2024/internal/repository/repoerrs"
 	"github.com/kldd0/travel-hack-2024/internal/service"
 	"github.com/labstack/echo/v4"
 )
@@ -46,7 +47,7 @@ type tourGetByIdInput struct {
 // @Tags			tours
 // @Produce		json
 // @Param			id	path		int	true	"Tour id"
-// @Success		200	{object}	entity.Tour
+// @Success		200	{object}	entity.DTOTour
 // @Failure		400	{object}	echo.HTTPError
 // @Failure		500	{object}	echo.HTTPError
 // @Router			/api/v1/tours/{id} [get]
@@ -65,6 +66,11 @@ func (r *tourRoutes) getById(c echo.Context) error {
 
 	tour, err := r.tourService.GetById(c.Request().Context(), input.Id)
 	if err != nil {
+		if errors.Is(err, repoerrs.ErrNotFound) {
+			ErrorResponse(c, http.StatusNotFound, err.Error())
+			return err
+		}
+
 		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return err
 	}
@@ -159,12 +165,7 @@ func (r *tourRoutes) getMany(c echo.Context) error {
 		return err
 	}
 
-	simplifiedTours := make([]entity.SimplifiedTourView, 0, len(tours))
-	for _, tour := range tours {
-		simplifiedTours = append(simplifiedTours, entity.SimplifyingTour(tour))
-	}
-
-	return c.JSON(http.StatusOK, simplifiedTours)
+	return c.JSON(http.StatusOK, tours)
 }
 
 // @Summary		Get hot tours according to search and filter params
@@ -204,30 +205,13 @@ func (r *tourRoutes) getHot(c echo.Context) error {
 		return err
 	}
 
-	tours, err := r.tourService.GetMany(c.Request().Context())
+	tours, err := r.tourService.GetHotMany(c.Request().Context())
 	if err != nil {
 		ErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return err
 	}
 
-	simplifiedTours := make([]entity.SimplifiedTourView, 0, len(tours))
-	for _, tour := range tours {
-		// check if tour has no dates
-		if len(tour.Dates) < 1 {
-			continue
-		}
-
-		// sort tour dates to get the nearest date to compare with today date
-		// to find out if tour is hot (start in or less than 72 hours)
-		sort.Slice(tour.Dates, func(i, j int) bool { return tour.Dates[i].Start.Before(tour.Dates[j].Start) })
-		if !(time.Until(tour.Dates[0].Start) < time.Hour*72) {
-			continue
-		}
-
-		simplifiedTours = append(simplifiedTours, entity.SimplifyingTour(tour))
-	}
-
-	return c.JSON(http.StatusOK, simplifiedTours)
+	return c.JSON(http.StatusOK, tours)
 }
 
 func (r *tourRoutes) makeOrder(c echo.Context) error {
