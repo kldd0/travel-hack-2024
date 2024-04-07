@@ -20,7 +20,7 @@ type Account interface {
 
 type Tour interface {
 	GetById(ctx context.Context, id int) (entity.Tour, error)
-	GetMany(ctx context.Context /* params for filtering */) ([]entity.Tour, error)
+	GetMany(ctx context.Context, filters map[string]interface{}) ([]entity.Tour, error)
 }
 
 type Review interface {

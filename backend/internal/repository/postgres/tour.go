@@ -59,11 +59,32 @@ func (r *TourRepository) GetById(ctx context.Context, id int) (entity.Tour, erro
 	return tour, nil
 }
 
-func (r *TourRepository) GetMany(ctx context.Context) ([]entity.Tour, error) {
-	sql, args, _ := r.Builder.
+func (r *TourRepository) GetMany(ctx context.Context, filters map[string]interface{}) ([]entity.Tour, error) {
+	builder := r.Builder.
 		Select("*").
-		From("tours").
-		ToSql()
+		From("tours")
+
+	/*
+		if len(filters) != 0 {
+			for key, value := range filters {
+				switch key {
+				case "when", "from_name", "adults", "childrens", "price_from", "price_to", "guaranteed", "food_id":
+					continue
+				case "to_name":
+					builder = builder.Where(squirrel.Eq{"location": value})
+				case "tags":
+					tags, _ := value.([]string)
+					builder = builder.Where(squirrel.Expr("tags::text[] @> ARRAY["+squirrel.Placeholders(len(tags))+"]", value))
+				case "with_flight", "with_acc", "with_food", "day_off", "low_cost", "age_group":
+					continue
+				default:
+					builder = builder.Where(squirrel.Eq{key: value})
+				}
+			}
+		}
+	*/
+
+	sql, args, _ := builder.ToSql()
 
 	rows, err := r.Pool.Query(ctx, sql, args...)
 	if err != nil {

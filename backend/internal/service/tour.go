@@ -22,8 +22,8 @@ func (s *TourService) GetById(ctx context.Context, id int) (entity.DTOTour, erro
 	return tour.ToDTOModel(), err
 }
 
-func (s *TourService) GetMany(ctx context.Context /* filtering params */) ([]entity.SimplifiedTourView, error) {
-	tours, err := s.tourRepository.GetMany(ctx)
+func (s *TourService) GetMany(ctx context.Context, filters map[string]interface{}) ([]entity.SimplifiedTourView, error) {
+	tours, err := s.tourRepository.GetMany(ctx, filters)
 
 	simplifiedTours := make([]entity.SimplifiedTourView, 0, len(tours))
 	for _, tour := range tours {
@@ -33,8 +33,8 @@ func (s *TourService) GetMany(ctx context.Context /* filtering params */) ([]ent
 	return simplifiedTours, err
 }
 
-func (s *TourService) GetHotMany(ctx context.Context) ([]entity.SimplifiedTourView, error) {
-	tours, err := s.tourRepository.GetMany(ctx)
+func (s *TourService) GetHotMany(ctx context.Context, filters map[string]interface{}) ([]entity.SimplifiedTourView, error) {
+	tours, err := s.tourRepository.GetMany(ctx, filters)
 
 	simplifiedTours := make([]entity.SimplifiedTourView, 0, len(tours))
 	for _, tour := range tours {

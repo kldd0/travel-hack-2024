@@ -15,6 +15,13 @@ func NewReviewService(reviewRepository repository.Review) *ReviewService {
 	return &ReviewService{reviewRepository: reviewRepository}
 }
 
-func (s *ReviewService) GetAllByTourId(ctx context.Context, tourId int) ([]entity.Review, error) {
-	return s.reviewRepository.GetAllByTourId(ctx, tourId)
+func (s *ReviewService) GetAllByTourId(ctx context.Context, tourId int) ([]entity.DTOReview, error) {
+	reviews, err := s.reviewRepository.GetAllByTourId(ctx, tourId)
+
+	dtoReviews := make([]entity.DTOReview, 0, len(reviews))
+	for _, review := range reviews {
+		dtoReviews = append(dtoReviews, review.ToDTOModel())
+	}
+
+	return dtoReviews, err
 }

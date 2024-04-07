@@ -11,6 +11,27 @@ definitions:
       name:
         type: string
     type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.DTOReview:
+    properties:
+      frequency:
+        type: string
+      liked:
+        items:
+          type: string
+        type: array
+      local_resident:
+        type: boolean
+      negative_comment:
+        type: string
+      positive_comment:
+        type: string
+      type:
+        type: string
+      username:
+        type: string
+      video:
+        $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
+    type: object
   github_com_kldd0_travel-hack-2024_internal_entity.DTOTour:
     properties:
       category:
@@ -53,7 +74,7 @@ definitions:
         type: integer
       reviews:
         items:
-          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.Review'
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.DTOReview'
         type: array
       tags:
         items:
@@ -86,38 +107,6 @@ definitions:
       src:
         type: string
       type:
-        type: string
-    type: object
-  github_com_kldd0_travel-hack-2024_internal_entity.Review:
-    properties:
-      author:
-        description: автор отзыва
-        type: string
-      frequency:
-        description: частота посещения
-        type: string
-      liked:
-        description: рейтинг
-        items:
-          type: string
-        type: array
-      local_resident:
-        description: местный?
-        type: boolean
-      negative:
-        description: недостатки
-        type: string
-      positive:
-        description: достоинства
-        type: string
-      tour_id:
-        description: id тура
-        type: integer
-      type:
-        description: тип отдыха (в одиночку. с детьми...)
-        type: string
-      video:
-        description: ссылка на видео
         type: string
     type: object
   github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView:
@@ -198,19 +187,19 @@ paths:
       parameters:
       - description: From location name
         in: query
-        name: fromName
+        name: from_name
         type: string
       - description: To location name
         in: query
-        name: toName
+        name: to_name
         type: string
       - description: Date of the tour
         in: query
-        name: whenDate
+        name: when
         type: string
       - description: Number of nights in the tour
         in: query
-        name: nightsCnt
+        name: nights_count
         type: integer
       - description: Number of adults
         in: query
@@ -220,17 +209,17 @@ paths:
         in: query
         name: childrens
         type: integer
-      - description: Type of the tour
+      - description: Tags of the tour, multiple values separated by commas
         in: query
-        name: tourType
-        type: string
+        name: tags
+        type: array
       - description: Minimum price
         in: query
-        name: priceFrom
+        name: price_from
         type: string
       - description: Maximum price
         in: query
-        name: priceTo
+        name: price_to
         type: string
       - description: Minimum rating
         in: query
@@ -242,27 +231,27 @@ paths:
         type: boolean
       - description: Flight is included
         in: query
-        name: withFlight
+        name: with_flight
         type: boolean
       - description: Accomodation is included
         in: query
-        name: withAcc
+        name: with_acc
         type: boolean
       - description: Nutrition is included
         in: query
-        name: withFood
+        name: with_food
         type: boolean
       - description: The tour takes place on a weekend
         in: query
-        name: dayOff
+        name: day_off
         type: boolean
       - description: Low cost tour
         in: query
-        name: lowCost
+        name: low_cost
         type: boolean
       - description: Age group ID
         in: query
-        name: ageGroupId
+        name: age_group
         type: integer
       - description: Tour difficulty level
         in: query
@@ -274,7 +263,7 @@ paths:
         type: integer
       - description: Food ID
         in: query
-        name: foodId
+        name: food_id
         type: integer
       produces:
       - application/json
@@ -427,6 +416,111 @@ paths:
           schema:
             $ref: '#/definitions/echo.HTTPError'
       summary: Get hot tours according to search and filter params
+      tags:
+      - tours
+  /api/v1/tours/recommendations:
+    get:
+      description: Get recommended tours according to search and filter params
+      parameters:
+      - description: From location name
+        in: query
+        name: fromName
+        type: string
+      - description: To location name
+        in: query
+        name: toName
+        type: string
+      - description: Date of the tour
+        in: query
+        name: whenDate
+        type: string
+      - description: Number of nights in the tour
+        in: query
+        name: nightsCnt
+        type: integer
+      - description: Number of adults
+        in: query
+        name: adults
+        type: integer
+      - description: Number of children
+        in: query
+        name: childrens
+        type: integer
+      - description: Type of the tour
+        in: query
+        name: tourType
+        type: string
+      - description: Minimum price
+        in: query
+        name: priceFrom
+        type: string
+      - description: Maximum price
+        in: query
+        name: priceTo
+        type: string
+      - description: Minimum rating
+        in: query
+        name: rating
+        type: integer
+      - description: Guaranteed availability
+        in: query
+        name: guaranteed
+        type: boolean
+      - description: Flight is included
+        in: query
+        name: withFlight
+        type: boolean
+      - description: Accomodation is included
+        in: query
+        name: withAcc
+        type: boolean
+      - description: Nutrition is included
+        in: query
+        name: withFood
+        type: boolean
+      - description: The tour takes place on a weekend
+        in: query
+        name: dayOff
+        type: boolean
+      - description: Low cost tour
+        in: query
+        name: lowCost
+        type: boolean
+      - description: Age group ID
+        in: query
+        name: ageGroupId
+        type: integer
+      - description: Tour difficulty level
+        in: query
+        name: difficulty
+        type: integer
+      - description: Comfort level
+        in: query
+        name: comfort
+        type: integer
+      - description: Food ID
+        in: query
+        name: foodId
+        type: integer
+      produces:
+      - application/json
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get reccomended tours according to search and filter params
       tags:
       - tours
 securityDefinitions:

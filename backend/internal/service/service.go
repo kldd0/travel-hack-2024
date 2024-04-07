@@ -9,12 +9,12 @@ import (
 
 type Tour interface {
 	GetById(ctx context.Context, id int) (entity.DTOTour, error)
-	GetMany(ctx context.Context /* ...filtering params */) ([]entity.SimplifiedTourView, error)
-	GetHotMany(ctx context.Context /* ...filtering params */) ([]entity.SimplifiedTourView, error)
+	GetMany(ctx context.Context, filters map[string]interface{}) ([]entity.SimplifiedTourView, error)
+	GetHotMany(ctx context.Context, filters map[string]interface{}) ([]entity.SimplifiedTourView, error)
 }
 
 type Review interface {
-	GetAllByTourId(ctx context.Context, tourId int) ([]entity.Review, error)
+	GetAllByTourId(ctx context.Context, tourId int) ([]entity.DTOReview, error)
 }
 
 type Order interface {

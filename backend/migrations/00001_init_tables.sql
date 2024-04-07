@@ -27,10 +27,26 @@ create table if not exists tours
 
 create unique index projects_id_idx on tours (id);
 
+create table if not exists reviews (
+    id             serial PRIMARY KEY NOT NULL,
+    tour_id        int,
+    liked          varchar[],
+    username       varchar(255),
+    positive       text,
+    negative       text,
+    local_resident boolean,
+    type           varchar(255),
+    frequency      varchar(255),
+    video          text,
+    foreign key (tour_id) references tours (id)
+);
+
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
+
+drop table if exists reviews;
 
 drop table if exists tours;
 

@@ -62,7 +62,7 @@ type DTOTour struct {
 	Rating          int          `json:"rating"`
 	IsLiked         bool         `json:"is_liked,omitempty"`
 	MapSrc          string       `json:"map" db:"map"`
-	Reviews         []Review     `json:"reviews"`
+	Reviews         []DTOReview  `json:"reviews"`
 
 	/* liked by user */
 	/* embed count of companions and their age group */
