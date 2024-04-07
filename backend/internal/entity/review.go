@@ -14,6 +14,7 @@ type Review struct {
 }
 
 type DTOReview struct {
+	Id              int       `json:"id"`
 	Liked           []string  `json:"liked"`
 	Username        string    `json:"username"`
 	PositiveComment string    `json:"positive_comment"`
@@ -26,6 +27,7 @@ type DTOReview struct {
 
 func (r Review) ToDTOModel() DTOReview {
 	return DTOReview{
+		Id:              r.Id,
 		Liked:           r.Liked,
 		Username:        r.Username,
 		PositiveComment: r.PositiveComment,

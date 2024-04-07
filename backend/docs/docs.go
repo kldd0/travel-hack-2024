@@ -114,7 +114,7 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
-                        "type": "array",
+                        "type": "string",
                         "description": "Tags of the tour, multiple values separated by commas",
                         "name": "tags",
                         "in": "query"
@@ -238,25 +238,25 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "From location name",
-                        "name": "fromName",
+                        "name": "from_name",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "To location name",
-                        "name": "toName",
+                        "name": "to_ame",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Date of the tour",
-                        "name": "whenDate",
+                        "name": "when",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Number of nights in the tour",
-                        "name": "nightsCnt",
+                        "name": "nights_count",
                         "in": "query"
                     },
                     {
@@ -274,19 +274,19 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Type of the tour",
-                        "name": "tourType",
+                        "name": "tags",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Minimum price",
-                        "name": "priceFrom",
+                        "name": "price_from",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Maximum price",
-                        "name": "priceTo",
+                        "name": "price_to",
                         "in": "query"
                     },
                     {
@@ -304,37 +304,37 @@ const docTemplate = `{
                     {
                         "type": "boolean",
                         "description": "Flight is included",
-                        "name": "withFlight",
+                        "name": "with_flight",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "Accomodation is included",
-                        "name": "withAcc",
+                        "name": "with_acc",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "Nutrition is included",
-                        "name": "withFood",
+                        "name": "with_food",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "The tour takes place on a weekend",
-                        "name": "dayOff",
+                        "name": "day_off",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "Low cost tour",
-                        "name": "lowCost",
+                        "name": "low_cost",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Age group ID",
-                        "name": "ageGroupId",
+                        "name": "age_group",
                         "in": "query"
                     },
                     {
@@ -396,25 +396,25 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "From location name",
-                        "name": "fromName",
+                        "name": "from_name",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "To location name",
-                        "name": "toName",
+                        "name": "to_name",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Date of the tour",
-                        "name": "whenDate",
+                        "name": "when_date",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Number of nights in the tour",
-                        "name": "nightsCnt",
+                        "name": "nights_cnt",
                         "in": "query"
                     },
                     {
@@ -432,19 +432,19 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Type of the tour",
-                        "name": "tourType",
+                        "name": "tags",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Minimum price",
-                        "name": "priceFrom",
+                        "name": "price_from",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Maximum price",
-                        "name": "priceTo",
+                        "name": "price_to",
                         "in": "query"
                     },
                     {
@@ -462,37 +462,37 @@ const docTemplate = `{
                     {
                         "type": "boolean",
                         "description": "Flight is included",
-                        "name": "withFlight",
+                        "name": "with_flight",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "Accomodation is included",
-                        "name": "withAcc",
+                        "name": "with_acc",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "Nutrition is included",
-                        "name": "withFood",
+                        "name": "with_food",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "The tour takes place on a weekend",
-                        "name": "dayOff",
+                        "name": "day_off",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "Low cost tour",
-                        "name": "lowCost",
+                        "name": "low_cost",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Age group ID",
-                        "name": "ageGroupId",
+                        "name": "age_group",
                         "in": "query"
                     },
                     {
@@ -510,7 +510,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Food ID",
-                        "name": "foodId",
+                        "name": "food_id",
                         "in": "query"
                     }
                 ],
@@ -604,6 +604,9 @@ const docTemplate = `{
             "properties": {
                 "frequency": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "liked": {
                     "type": "array",

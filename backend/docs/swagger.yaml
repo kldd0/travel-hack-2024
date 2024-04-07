@@ -15,6 +15,8 @@ definitions:
     properties:
       frequency:
         type: string
+      id:
+        type: integer
       liked:
         items:
           type: string
@@ -212,7 +214,7 @@ paths:
       - description: Tags of the tour, multiple values separated by commas
         in: query
         name: tags
-        type: array
+        type: string
       - description: Minimum price
         in: query
         name: price_from
@@ -319,19 +321,19 @@ paths:
       parameters:
       - description: From location name
         in: query
-        name: fromName
+        name: from_name
         type: string
       - description: To location name
         in: query
-        name: toName
+        name: to_ame
         type: string
       - description: Date of the tour
         in: query
-        name: whenDate
+        name: when
         type: string
       - description: Number of nights in the tour
         in: query
-        name: nightsCnt
+        name: nights_count
         type: integer
       - description: Number of adults
         in: query
@@ -343,15 +345,15 @@ paths:
         type: integer
       - description: Type of the tour
         in: query
-        name: tourType
+        name: tags
         type: string
       - description: Minimum price
         in: query
-        name: priceFrom
+        name: price_from
         type: string
       - description: Maximum price
         in: query
-        name: priceTo
+        name: price_to
         type: string
       - description: Minimum rating
         in: query
@@ -363,27 +365,27 @@ paths:
         type: boolean
       - description: Flight is included
         in: query
-        name: withFlight
+        name: with_flight
         type: boolean
       - description: Accomodation is included
         in: query
-        name: withAcc
+        name: with_acc
         type: boolean
       - description: Nutrition is included
         in: query
-        name: withFood
+        name: with_food
         type: boolean
       - description: The tour takes place on a weekend
         in: query
-        name: dayOff
+        name: day_off
         type: boolean
       - description: Low cost tour
         in: query
-        name: lowCost
+        name: low_cost
         type: boolean
       - description: Age group ID
         in: query
-        name: ageGroupId
+        name: age_group
         type: integer
       - description: Tour difficulty level
         in: query
@@ -424,19 +426,19 @@ paths:
       parameters:
       - description: From location name
         in: query
-        name: fromName
+        name: from_name
         type: string
       - description: To location name
         in: query
-        name: toName
+        name: to_name
         type: string
       - description: Date of the tour
         in: query
-        name: whenDate
+        name: when_date
         type: string
       - description: Number of nights in the tour
         in: query
-        name: nightsCnt
+        name: nights_cnt
         type: integer
       - description: Number of adults
         in: query
@@ -448,15 +450,15 @@ paths:
         type: integer
       - description: Type of the tour
         in: query
-        name: tourType
+        name: tags
         type: string
       - description: Minimum price
         in: query
-        name: priceFrom
+        name: price_from
         type: string
       - description: Maximum price
         in: query
-        name: priceTo
+        name: price_to
         type: string
       - description: Minimum rating
         in: query
@@ -468,27 +470,27 @@ paths:
         type: boolean
       - description: Flight is included
         in: query
-        name: withFlight
+        name: with_flight
         type: boolean
       - description: Accomodation is included
         in: query
-        name: withAcc
+        name: with_acc
         type: boolean
       - description: Nutrition is included
         in: query
-        name: withFood
+        name: with_food
         type: boolean
       - description: The tour takes place on a weekend
         in: query
-        name: dayOff
+        name: day_off
         type: boolean
       - description: Low cost tour
         in: query
-        name: lowCost
+        name: low_cost
         type: boolean
       - description: Age group ID
         in: query
-        name: ageGroupId
+        name: age_group
         type: integer
       - description: Tour difficulty level
         in: query
@@ -500,7 +502,7 @@ paths:
         type: integer
       - description: Food ID
         in: query
-        name: foodId
+        name: food_id
         type: integer
       produces:
       - application/json

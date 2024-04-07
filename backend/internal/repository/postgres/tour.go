@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v5"
 	"github.com/kldd0/travel-hack-2024/internal/entity"
 	"github.com/kldd0/travel-hack-2024/internal/pkg/postgres"
@@ -64,25 +65,32 @@ func (r *TourRepository) GetMany(ctx context.Context, filters map[string]interfa
 		Select("*").
 		From("tours")
 
-	/*
-		if len(filters) != 0 {
-			for key, value := range filters {
-				switch key {
-				case "when", "from_name", "adults", "childrens", "price_from", "price_to", "guaranteed", "food_id":
+	if len(filters) != 0 {
+		for key, value := range filters {
+			switch key {
+			case "location":
+				value, _ := value.(string)
+				builder = builder.Where(squirrel.Like{"location": "%" + value + "%"})
+			case "tags":
+				continue
+				// check if received value is slice of tags
+				if tags, ok := value.([]string); ok {
+					if len(tags) > 0 {
+						builder = builder.Where(squirrel.And{squirrel.Expr("tags::text[] @> ARRAY["+squirrel.Placeholders(len(tags))+"]", value)})
+					}
 					continue
-				case "to_name":
-					builder = builder.Where(squirrel.Eq{"location": value})
-				case "tags":
-					tags, _ := value.([]string)
-					builder = builder.Where(squirrel.Expr("tags::text[] @> ARRAY["+squirrel.Placeholders(len(tags))+"]", value))
-				case "with_flight", "with_acc", "with_food", "day_off", "low_cost", "age_group":
-					continue
-				default:
-					builder = builder.Where(squirrel.Eq{key: value})
 				}
+
+				// otherwise cast to string type
+				if tag, ok := value.(string); ok {
+					builder.Where(squirrel.And{squirrel.Expr("tags::text[] @> ARRAY["+squirrel.Placeholders(1)+"]", tag)})
+				}
+			case "with_flight", "with_acc", "with_food", "day_off", "low_cost", "age_group":
+				continue
+			default:
 			}
 		}
-	*/
+	}
 
 	sql, args, _ := builder.ToSql()
 

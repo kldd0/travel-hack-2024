@@ -41,12 +41,19 @@ create table if not exists reviews (
     foreign key (tour_id) references tours (id)
 );
 
+create table if not exists cities (
+    id   serial PRIMARY KEY NOT NULL,
+    name varchar(255)       NOT NULL
+);
+
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
 
 drop table if exists reviews;
+
+drop table if exists cities;
 
 drop table if exists tours;
 

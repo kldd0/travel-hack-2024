@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/kldd0/travel-hack-2024/internal/entity"
@@ -32,9 +33,9 @@ func newTourRoutes(
 
 	g.GET("", r.getMany)
 	g.GET("/hot", r.getHot)
-	g.GET("/rec", r.getRecommendations)
-	g.GET("/:id", r.getById)
+	g.GET("/recommendations", r.getRecommendations)
 
+	g.GET("/:id", r.getById)
 	g.POST("/:id/order", r.makeOrder)
 
 	return r
@@ -90,58 +91,50 @@ func (r *tourRoutes) getById(c echo.Context) error {
 }
 
 type ToursSearch struct {
-	FromName  string    `query:"fromName"`
-	ToName    string    `query:"toName"`
-	WhenDate  time.Time `query:"whenDate"`
-	NightsCnt int       `query:"nightsCnt"`
+	FromName  string    `query:"from_name"`
+	ToName    string    `query:"to_name"`
+	WhenDate  time.Time `query:"when"`
+	NightsCnt int       `query:"nights_count"`
 	Adults    int       `query:"adults"`
 	Childrens int       `query:"childrens"`
 }
 
 type ToursFilter struct {
 	Tags       []string `query:"tags"`
-	PriceFrom  string   `query:"priceFrom"`
-	PriceTo    string   `query:"priceTo"`
+	PriceFrom  string   `query:"price_from"`
+	PriceTo    string   `query:"price_to"`
 	Rating     int      `query:"rating"`
 	Guaranteed bool     `query:"guaranteed"`
 	Features   Features
-	AgeGroupId int `query:"ageGroupId"`
+	AgeGroupId int `query:"age_group"`
 	Difficulty int `query:"difficulty"`
 	Comfort    int `query:"comfort"`
-	FoodId     int `query:"foodId"`
+	FoodId     int `query:"food_id"`
 }
 
 type Features struct {
-	WithFlight       bool `query:"withFlight"`
-	WithAccomodation bool `query:"withAcc"`
-	WithFood         bool `query:"withNutrition"`
-	DayOff           bool `query:"dayOff"`
-	LowCost          bool `query:"lowCost" `
+	WithFlight       bool `query:"with_flight"`
+	WithAccomodation bool `query:"with_acc"`
+	WithFood         bool `query:"with_food"`
+	DayOff           bool `query:"day_off"`
+	LowCost          bool `query:"low_cost" `
 }
 
 func ToFilters(s ToursSearch, f ToursFilter) map[string]interface{} {
 	result := make(map[string]interface{})
 
-	result["from_name"] = s.FromName
-	result["to_name"] = s.ToName
-	result["when"] = s.WhenDate
-	result["nights_count"] = s.NightsCnt
-	result["adults"] = s.Adults
-	result["childrens"] = s.Childrens
-	result["tags"] = f.Tags
-	result["price_from"] = f.PriceFrom
-	result["price_to"] = f.PriceTo
-	result["rating"] = f.Rating
-	result["guaranteed"] = f.Guaranteed
-	result["with_flight"] = f.Features.WithFlight
-	result["with_acc"] = f.Features.WithAccomodation
-	result["with_food"] = f.Features.WithFood
-	result["day_off"] = f.Features.DayOff
-	result["low_cost"] = f.Features.LowCost
-	result["age_group"] = f.AgeGroupId
-	result["difficulty_level"] = f.Difficulty
-	result["comfort_level"] = f.Comfort
-	result["food_id"] = f.FoodId
+	if s.ToName != "" {
+		result["location"] = s.ToName
+	}
+
+	if !s.WhenDate.IsZero() {
+		result["date"] = s.WhenDate
+	}
+
+	if s.NightsCnt != 0 {
+		result["nights_count"] = s.NightsCnt
+	}
+	// result["tags"] = f.Tags
 
 	return result
 }
@@ -156,7 +149,7 @@ func ToFilters(s ToursSearch, f ToursFilter) map[string]interface{} {
 // @Param			nights_count	query	int		false	"Number of nights in the tour"
 // @Param			adults			query	int		false	"Number of adults"
 // @Param			childrens		query	int		false	"Number of children"
-// @Param			tags			query	array	false	"Tags of the tour, multiple values separated by commas"
+// @Param			tags			query	string	false	"Tags of the tour, multiple values separated by commas"
 // @Param			price_from		query	string	false	"Minimum price"
 // @Param			price_to		query	string	false	"Maximum price"
 // @Param			rating			query	int		false	"Minimum rating"
@@ -206,26 +199,26 @@ func (r *tourRoutes) getMany(c echo.Context) error {
 // @Description	Get hot tours according to search and filter params
 // @Tags			tours
 // @Produce		json
-// @Param			fromName	query	string	false	"From location name"
-// @Param			toName		query	string	false	"To location name"
-// @Param			whenDate	query	string	false	"Date of the tour"
-// @Param			nightsCnt	query	int		false	"Number of nights in the tour"
-// @Param			adults		query	int		false	"Number of adults"
-// @Param			childrens	query	int		false	"Number of children"
-// @Param			tourType	query	string	false	"Type of the tour"
-// @Param			priceFrom	query	string	false	"Minimum price"
-// @Param			priceTo		query	string	false	"Maximum price"
-// @Param			rating		query	int		false	"Minimum rating"
-// @Param			guaranteed	query	boolean	false	"Guaranteed availability"
-// @Param			withFlight	query	bool	false	"Flight is included"
-// @Param			withAcc		query	bool	false	"Accomodation is included"
-// @Param			withFood	query	bool	false	"Nutrition is included""
-// @Param			dayOff		query	bool	false	"The tour takes place on a weekend"
-// @Param			lowCost		query	bool	false	"Low cost tour"
-// @Param			ageGroupId	query	int		false	"Age group ID"
-// @Param			difficulty	query	int		false	"Tour difficulty level"
-// @Param			comfort		query	int		false	"Comfort level"
-// @Param			foodId		query	int		false	"Food ID"
+// @Param			from_name		query	string	false	"From location name"
+// @Param			to_ame			query	string	false	"To location name"
+// @Param			when			query	string	false	"Date of the tour"
+// @Param			nights_count	query	int		false	"Number of nights in the tour"
+// @Param			adults			query	int		false	"Number of adults"
+// @Param			childrens		query	int		false	"Number of children"
+// @Param			tags			query	string	false	"Type of the tour"
+// @Param			price_from		query	string	false	"Minimum price"
+// @Param			price_to		query	string	false	"Maximum price"
+// @Param			rating			query	int		false	"Minimum rating"
+// @Param			guaranteed		query	boolean	false	"Guaranteed availability"
+// @Param			with_flight		query	bool	false	"Flight is included"
+// @Param			with_acc		query	bool	false	"Accomodation is included"
+// @Param			with_food		query	bool	false	"Nutrition is included""
+// @Param			day_off			query	bool	false	"The tour takes place on a weekend"
+// @Param			low_cost		query	bool	false	"Low cost tour"
+// @Param			age_group		query	int		false	"Age group ID"
+// @Param			difficulty		query	int		false	"Tour difficulty level"
+// @Param			comfort			query	int		false	"Comfort level"
+// @Param			foodId			query	int		false	"Food ID"
 // @Produce		json
 // @Success		200	{array}		entity.SimplifiedTourView
 // @Failure		400	{object}	echo.HTTPError
@@ -256,49 +249,56 @@ func (r *tourRoutes) getHot(c echo.Context) error {
 	return c.JSON(http.StatusOK, tours)
 }
 
-type tourGetByTagsInput struct {
-	Tags []string `param:"tags"`
+type tourGetByTagInput struct {
+	Tag *string `param:"tags"`
 }
 
 // @Summary		Get reccomended tours according to search and filter params
 // @Description	Get recommended tours according to search and filter params
 // @Tags			tours
 // @Produce		json
-// @Param			fromName	query	string	false	"From location name"
-// @Param			toName		query	string	false	"To location name"
-// @Param			whenDate	query	string	false	"Date of the tour"
-// @Param			nightsCnt	query	int		false	"Number of nights in the tour"
+// @Param			from_name	query	string	false	"From location name"
+// @Param			to_name		query	string	false	"To location name"
+// @Param			when_date	query	string	false	"Date of the tour"
+// @Param			nights_cnt	query	int		false	"Number of nights in the tour"
 // @Param			adults		query	int		false	"Number of adults"
 // @Param			childrens	query	int		false	"Number of children"
-// @Param			tourType	query	string	false	"Type of the tour"
-// @Param			priceFrom	query	string	false	"Minimum price"
-// @Param			priceTo		query	string	false	"Maximum price"
+// @Param			tags		query	string	false	"Type of the tour"
+// @Param			price_from	query	string	false	"Minimum price"
+// @Param			price_to	query	string	false	"Maximum price"
 // @Param			rating		query	int		false	"Minimum rating"
 // @Param			guaranteed	query	boolean	false	"Guaranteed availability"
-// @Param			withFlight	query	bool	false	"Flight is included"
-// @Param			withAcc		query	bool	false	"Accomodation is included"
-// @Param			withFood	query	bool	false	"Nutrition is included""
-// @Param			dayOff		query	bool	false	"The tour takes place on a weekend"
-// @Param			lowCost		query	bool	false	"Low cost tour"
-// @Param			ageGroupId	query	int		false	"Age group ID"
+// @Param			with_flight	query	bool	false	"Flight is included"
+// @Param			with_acc	query	bool	false	"Accomodation is included"
+// @Param			with_food	query	bool	false	"Nutrition is included""
+// @Param			day_off		query	bool	false	"The tour takes place on a weekend"
+// @Param			low_cost	query	bool	false	"Low cost tour"
+// @Param			age_group	query	int		false	"Age group ID"
 // @Param			difficulty	query	int		false	"Tour difficulty level"
 // @Param			comfort		query	int		false	"Comfort level"
-// @Param			foodId		query	int		false	"Food ID"
+// @Param			food_id		query	int		false	"Food ID"
 // @Produce		json
 // @Success		200	{array}		entity.SimplifiedTourView
 // @Failure		400	{object}	echo.HTTPError
 // @Failure		500	{object}	echo.HTTPError
 // @Router			/api/v1/tours/recommendations [get]
 func (r *tourRoutes) getRecommendations(c echo.Context) error {
-	var input tourGetByTagsInput
+	var input tourGetByTagInput
+
+	var tags []string
+	if strings.Contains(c.QueryParam("tags"), ",") {
+		tags = strings.Split(c.QueryParam("tags"), ",")
+	}
 
 	if err := c.Bind(&input); err != nil {
 		ErrorResponse(c, http.StatusBadRequest, "invalid query parameters")
 		return err
 	}
 
-	filters := map[string]interface{}{
-		"tags": input.Tags,
+	filters := make(map[string]interface{}, 1)
+	filters["tags"] = input.Tag
+	if tags != nil {
+		filters["tags"] = tags
 	}
 
 	tours, err := r.tourService.GetMany(c.Request().Context(), filters)
