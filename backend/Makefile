@@ -37,6 +37,9 @@ migrate-up: ### migration up
 	migrate -path migrations -database '$(PG_URL_LOCALHOST)?sslmode=disable' up
 .PHONY: migrate-up
 
+migrate-local: ### migration in local env
+	go run ./cmd/migrate/main.go -dir migrations migrate up
+
 migrate-down: ### migration down
 	echo "y" | migrate -path migrations -database '$(PG_URL_LOCALHOST)?sslmode=disable' down
 .PHONY: migrate-down
