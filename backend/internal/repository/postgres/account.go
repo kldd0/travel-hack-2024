@@ -5,7 +5,7 @@ import (
 )
 
 type AccountRepository struct {
-	pg *postgres.Postgres
+	*postgres.Postgres
 }
 
 func NewAccountRepository(pg *postgres.Postgres) *AccountRepository {

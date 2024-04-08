@@ -12,7 +12,7 @@ type Config struct {
 	Env string `yaml:"env" env-default:"local"`
 
 	HTTPServer `yaml:"http_server"`
-	Postgres
+	Postgres   `yaml:"postgres"`
 }
 
 type HTTPServer struct {
@@ -23,7 +23,7 @@ type HTTPServer struct {
 
 type Postgres struct {
 	MaxPoolSize int    `env-required:"true" yaml:"max_pool_size" env:"PG_MAX_POOL_SIZE"`
-	URL         string `env-required:"true"                      env:"PG_URL"`
+	DSN         string `env-required:"true"                      env:"PG_DSN"`
 }
 
 func MustLoad() *Config {
@@ -44,6 +44,10 @@ func MustLoadPath(configPath string) *Config {
 
 	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
 		panic("failed reading config: " + err.Error())
+	}
+
+	if err := cleanenv.UpdateEnv(&cfg); err != nil {
+		panic("error updating env: " + err.Error())
 	}
 
 	return &cfg

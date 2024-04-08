@@ -1,0 +1,806 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Additional service for RUSSPASS",
+        "title": "Tour Management Service",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "185.104.251.6:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/cities/{prefix}": {
+            "get": {
+                "description": "Get city by prefix",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cities"
+                ],
+                "summary": "Get city by prefix",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "City name prefix",
+                        "name": "prefix",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Output limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.City"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tours": {
+            "get": {
+                "description": "Get tours according to search and filter params",
+                "produces": [
+                    "application/json",
+                    "application/json"
+                ],
+                "tags": [
+                    "tours"
+                ],
+                "summary": "Get tours according to search and filter params",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "From location name",
+                        "name": "from_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "To location name",
+                        "name": "to_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date of the tour",
+                        "name": "when",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of nights in the tour",
+                        "name": "nights_count",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of adults",
+                        "name": "adults",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of children",
+                        "name": "childrens",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tags of the tour, multiple values separated by commas",
+                        "name": "tags",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Minimum price",
+                        "name": "price_from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Maximum price",
+                        "name": "price_to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Minimum rating",
+                        "name": "rating",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Guaranteed availability",
+                        "name": "guaranteed",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Flight is included",
+                        "name": "with_flight",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Accomodation is included",
+                        "name": "with_acc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Nutrition is included",
+                        "name": "with_food",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "The tour takes place on a weekend",
+                        "name": "day_off",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Low cost tour",
+                        "name": "low_cost",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Age group ID",
+                        "name": "age_group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Tour difficulty level",
+                        "name": "difficulty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Comfort level",
+                        "name": "comfort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Food ID",
+                        "name": "food_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tours/hot": {
+            "get": {
+                "description": "Get hot tours according to search and filter params",
+                "produces": [
+                    "application/json",
+                    "application/json"
+                ],
+                "tags": [
+                    "tours"
+                ],
+                "summary": "Get hot tours according to search and filter params",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "From location name",
+                        "name": "from_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "To location name",
+                        "name": "to_ame",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date of the tour",
+                        "name": "when",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of nights in the tour",
+                        "name": "nights_count",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of adults",
+                        "name": "adults",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of children",
+                        "name": "childrens",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Type of the tour",
+                        "name": "tags",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Minimum price",
+                        "name": "price_from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Maximum price",
+                        "name": "price_to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Minimum rating",
+                        "name": "rating",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Guaranteed availability",
+                        "name": "guaranteed",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Flight is included",
+                        "name": "with_flight",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Accomodation is included",
+                        "name": "with_acc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Nutrition is included",
+                        "name": "with_food",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "The tour takes place on a weekend",
+                        "name": "day_off",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Low cost tour",
+                        "name": "low_cost",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Age group ID",
+                        "name": "age_group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Tour difficulty level",
+                        "name": "difficulty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Comfort level",
+                        "name": "comfort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Food ID",
+                        "name": "foodId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tours/recommendations": {
+            "get": {
+                "description": "Get recommended tours according to search and filter params",
+                "produces": [
+                    "application/json",
+                    "application/json"
+                ],
+                "tags": [
+                    "tours"
+                ],
+                "summary": "Get reccomended tours according to search and filter params",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "From location name",
+                        "name": "from_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "To location name",
+                        "name": "to_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date of the tour",
+                        "name": "when_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of nights in the tour",
+                        "name": "nights_cnt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of adults",
+                        "name": "adults",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of children",
+                        "name": "childrens",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Type of the tour",
+                        "name": "tags",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Minimum price",
+                        "name": "price_from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Maximum price",
+                        "name": "price_to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Minimum rating",
+                        "name": "rating",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Guaranteed availability",
+                        "name": "guaranteed",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Flight is included",
+                        "name": "with_flight",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Accomodation is included",
+                        "name": "with_acc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Nutrition is included",
+                        "name": "with_food",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "The tour takes place on a weekend",
+                        "name": "day_off",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Low cost tour",
+                        "name": "low_cost",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Age group ID",
+                        "name": "age_group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Tour difficulty level",
+                        "name": "difficulty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Comfort level",
+                        "name": "comfort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Food ID",
+                        "name": "food_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tours/{id}": {
+            "get": {
+                "description": "Get tour by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tours"
+                ],
+                "summary": "Get tour by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Tour id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.DTOTour"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/echo.HTTPError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "echo.HTTPError": {
+            "type": "object",
+            "properties": {
+                "message": {}
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.City": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.DTOReview": {
+            "type": "object",
+            "properties": {
+                "frequency": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "liked": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "local_resident": {
+                    "type": "boolean"
+                },
+                "negative_comment": {
+                    "type": "string"
+                },
+                "positive_comment": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "video": {
+                    "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType"
+                }
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.DTOTour": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "comfort_level": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "difficulty_level": {
+                    "type": "string"
+                },
+                "faq": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "important_info": {
+                    "type": "string"
+                },
+                "included": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_liked": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "map": {
+                    "type": "string"
+                },
+                "media": {
+                    "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaSectors"
+                },
+                "nights_count": {
+                    "type": "integer"
+                },
+                "not_included": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "program": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "rating": {
+                    "type": "integer"
+                },
+                "reviews": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.DTOReview"
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                },
+                "tour_dates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate"
+                    }
+                }
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.MediaSectors": {
+            "type": "object",
+            "properties": {
+                "acc": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType"
+                    }
+                },
+                "head": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType"
+                    }
+                },
+                "program": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType"
+                    }
+                }
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.MediaType": {
+            "type": "object",
+            "properties": {
+                "src": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_liked": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "media": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType"
+                    }
+                },
+                "nights_count": {
+                    "type": "integer"
+                },
+                "rating": {
+                    "type": "integer"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kldd0_travel-hack-2024_internal_entity.TourDate": {
+            "type": "object",
+            "properties": {
+                "end": {
+                    "type": "string"
+                },
+                "start": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "JWT": {
+            "description": "JWT token",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

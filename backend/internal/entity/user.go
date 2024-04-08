@@ -3,8 +3,8 @@ package entity
 import "time"
 
 type User struct {
-	Id        int       `db:"id"`
-	Username  string    `db:"username"`
-	Password  string    `db:"password"`
-	CreatedAt time.Time `db:"created_at"`
+	Id        int       `json:"id" db:"id"`
+	Username  string    `json:"username" db:"username"`
+	Password  string    `json:"password" db:"password"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
 }

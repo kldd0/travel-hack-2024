@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./logs:/logs
+      - ./secrets:/secrets
+    env_file:
+      - .env
+    ports:
+      - "${HTTP_PORT}:${HTTP_PORT}"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: russpass
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  pg-data:

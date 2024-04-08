@@ -17,17 +17,17 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// @title           Tour Management Service
-// @version         1.0
-// @description     Additional service for RUSSPASS
+//	@title			Tour Management Service
+//	@version		1.0
+//	@description	Additional service for RUSSPASS
 
-// @host      localhost:8080
-// @BasePath  /
+//	@host		185.104.251.6:8080
+//	@BasePath	/
 
-// @securityDefinitions.apikey  JWT
-// @in                          header
-// @name                        Authorization
-// @description					JWT token
+//	@securityDefinitions.apikey	JWT
+//	@in							header
+//	@name						Authorization
+//	@description				JWT token
 
 func Run() {
 	config := config.MustLoad()
@@ -37,7 +37,7 @@ func Run() {
 
 	// Repositories
 	log.Info().Msg("Initializing postgres...")
-	pg, err := postgres.New(config.Postgres.URL, postgres.MaxPoolSize(config.Postgres.MaxPoolSize))
+	pg, err := postgres.New(config.Postgres.DSN, postgres.MaxPoolSize(config.Postgres.MaxPoolSize))
 	if err != nil {
 		log.Err(fmt.Errorf("app.Run.postgres.NewServices: %w", err))
 		os.Exit(-1)
@@ -46,7 +46,7 @@ func Run() {
 
 	// Repositories
 	log.Info().Msg("Initializing repositories")
-	repositories := repository.NewRepositories()
+	repositories := repository.NewRepositories(pg)
 
 	// Services dependencies
 	log.Info().Msg("Initializing services")
@@ -88,8 +88,7 @@ func Run() {
 
 	// Graceful shutdown
 	log.Info().Msg("Shutting down")
-	err = httpServer.Shutdown()
-	if err != nil {
+	if err := httpServer.Shutdown(); err != nil {
 		log.Err(fmt.Errorf("app.Run.httpServer.Shutdown: %w", err))
 	}
 }

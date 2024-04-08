@@ -1,0 +1,534 @@
+basePath: /
+definitions:
+  echo.HTTPError:
+    properties:
+      message: {}
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.City:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.DTOReview:
+    properties:
+      frequency:
+        type: string
+      id:
+        type: integer
+      liked:
+        items:
+          type: string
+        type: array
+      local_resident:
+        type: boolean
+      negative_comment:
+        type: string
+      positive_comment:
+        type: string
+      type:
+        type: string
+      username:
+        type: string
+      video:
+        $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.DTOTour:
+    properties:
+      category:
+        type: string
+      comfort_level:
+        type: string
+      description:
+        type: string
+      difficulty_level:
+        type: string
+      faq:
+        type: string
+      id:
+        type: integer
+      important_info:
+        type: string
+      included:
+        items:
+          type: string
+        type: array
+      is_liked:
+        type: boolean
+      location:
+        type: string
+      map:
+        type: string
+      media:
+        $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaSectors'
+      nights_count:
+        type: integer
+      not_included:
+        items:
+          type: string
+        type: array
+      program:
+        items:
+          type: string
+        type: array
+      rating:
+        type: integer
+      reviews:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.DTOReview'
+        type: array
+      tags:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+      tour_dates:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.TourDate'
+        type: array
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.MediaSectors:
+    properties:
+      acc:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
+        type: array
+      head:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
+        type: array
+      program:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
+        type: array
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.MediaType:
+    properties:
+      src:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView:
+    properties:
+      category:
+        type: string
+      id:
+        type: integer
+      is_liked:
+        type: boolean
+      location:
+        type: string
+      media:
+        items:
+          $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.MediaType'
+        type: array
+      nights_count:
+        type: integer
+      rating:
+        type: integer
+      tags:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+    type: object
+  github_com_kldd0_travel-hack-2024_internal_entity.TourDate:
+    properties:
+      end:
+        type: string
+      start:
+        type: string
+    type: object
+host: 185.104.251.6:8080
+info:
+  contact: {}
+  description: Additional service for RUSSPASS
+  title: Tour Management Service
+  version: "1.0"
+paths:
+  /api/v1/cities/{prefix}:
+    get:
+      description: Get city by prefix
+      parameters:
+      - description: City name prefix
+        in: path
+        name: prefix
+        required: true
+        type: string
+      - description: Output limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.City'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get city by prefix
+      tags:
+      - cities
+  /api/v1/tours:
+    get:
+      description: Get tours according to search and filter params
+      parameters:
+      - description: From location name
+        in: query
+        name: from_name
+        type: string
+      - description: To location name
+        in: query
+        name: to_name
+        type: string
+      - description: Date of the tour
+        in: query
+        name: when
+        type: string
+      - description: Number of nights in the tour
+        in: query
+        name: nights_count
+        type: integer
+      - description: Number of adults
+        in: query
+        name: adults
+        type: integer
+      - description: Number of children
+        in: query
+        name: childrens
+        type: integer
+      - description: Tags of the tour, multiple values separated by commas
+        in: query
+        name: tags
+        type: string
+      - description: Minimum price
+        in: query
+        name: price_from
+        type: string
+      - description: Maximum price
+        in: query
+        name: price_to
+        type: string
+      - description: Minimum rating
+        in: query
+        name: rating
+        type: integer
+      - description: Guaranteed availability
+        in: query
+        name: guaranteed
+        type: boolean
+      - description: Flight is included
+        in: query
+        name: with_flight
+        type: boolean
+      - description: Accomodation is included
+        in: query
+        name: with_acc
+        type: boolean
+      - description: Nutrition is included
+        in: query
+        name: with_food
+        type: boolean
+      - description: The tour takes place on a weekend
+        in: query
+        name: day_off
+        type: boolean
+      - description: Low cost tour
+        in: query
+        name: low_cost
+        type: boolean
+      - description: Age group ID
+        in: query
+        name: age_group
+        type: integer
+      - description: Tour difficulty level
+        in: query
+        name: difficulty
+        type: integer
+      - description: Comfort level
+        in: query
+        name: comfort
+        type: integer
+      - description: Food ID
+        in: query
+        name: food_id
+        type: integer
+      produces:
+      - application/json
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get tours according to search and filter params
+      tags:
+      - tours
+  /api/v1/tours/{id}:
+    get:
+      description: Get tour by id
+      parameters:
+      - description: Tour id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.DTOTour'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get tour by id
+      tags:
+      - tours
+  /api/v1/tours/hot:
+    get:
+      description: Get hot tours according to search and filter params
+      parameters:
+      - description: From location name
+        in: query
+        name: from_name
+        type: string
+      - description: To location name
+        in: query
+        name: to_ame
+        type: string
+      - description: Date of the tour
+        in: query
+        name: when
+        type: string
+      - description: Number of nights in the tour
+        in: query
+        name: nights_count
+        type: integer
+      - description: Number of adults
+        in: query
+        name: adults
+        type: integer
+      - description: Number of children
+        in: query
+        name: childrens
+        type: integer
+      - description: Type of the tour
+        in: query
+        name: tags
+        type: string
+      - description: Minimum price
+        in: query
+        name: price_from
+        type: string
+      - description: Maximum price
+        in: query
+        name: price_to
+        type: string
+      - description: Minimum rating
+        in: query
+        name: rating
+        type: integer
+      - description: Guaranteed availability
+        in: query
+        name: guaranteed
+        type: boolean
+      - description: Flight is included
+        in: query
+        name: with_flight
+        type: boolean
+      - description: Accomodation is included
+        in: query
+        name: with_acc
+        type: boolean
+      - description: Nutrition is included
+        in: query
+        name: with_food
+        type: boolean
+      - description: The tour takes place on a weekend
+        in: query
+        name: day_off
+        type: boolean
+      - description: Low cost tour
+        in: query
+        name: low_cost
+        type: boolean
+      - description: Age group ID
+        in: query
+        name: age_group
+        type: integer
+      - description: Tour difficulty level
+        in: query
+        name: difficulty
+        type: integer
+      - description: Comfort level
+        in: query
+        name: comfort
+        type: integer
+      - description: Food ID
+        in: query
+        name: foodId
+        type: integer
+      produces:
+      - application/json
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get hot tours according to search and filter params
+      tags:
+      - tours
+  /api/v1/tours/recommendations:
+    get:
+      description: Get recommended tours according to search and filter params
+      parameters:
+      - description: From location name
+        in: query
+        name: from_name
+        type: string
+      - description: To location name
+        in: query
+        name: to_name
+        type: string
+      - description: Date of the tour
+        in: query
+        name: when_date
+        type: string
+      - description: Number of nights in the tour
+        in: query
+        name: nights_cnt
+        type: integer
+      - description: Number of adults
+        in: query
+        name: adults
+        type: integer
+      - description: Number of children
+        in: query
+        name: childrens
+        type: integer
+      - description: Type of the tour
+        in: query
+        name: tags
+        type: string
+      - description: Minimum price
+        in: query
+        name: price_from
+        type: string
+      - description: Maximum price
+        in: query
+        name: price_to
+        type: string
+      - description: Minimum rating
+        in: query
+        name: rating
+        type: integer
+      - description: Guaranteed availability
+        in: query
+        name: guaranteed
+        type: boolean
+      - description: Flight is included
+        in: query
+        name: with_flight
+        type: boolean
+      - description: Accomodation is included
+        in: query
+        name: with_acc
+        type: boolean
+      - description: Nutrition is included
+        in: query
+        name: with_food
+        type: boolean
+      - description: The tour takes place on a weekend
+        in: query
+        name: day_off
+        type: boolean
+      - description: Low cost tour
+        in: query
+        name: low_cost
+        type: boolean
+      - description: Age group ID
+        in: query
+        name: age_group
+        type: integer
+      - description: Tour difficulty level
+        in: query
+        name: difficulty
+        type: integer
+      - description: Comfort level
+        in: query
+        name: comfort
+        type: integer
+      - description: Food ID
+        in: query
+        name: food_id
+        type: integer
+      produces:
+      - application/json
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_kldd0_travel-hack-2024_internal_entity.SimplifiedTourView'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get reccomended tours according to search and filter params
+      tags:
+      - tours
+securityDefinitions:
+  JWT:
+    description: JWT token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
